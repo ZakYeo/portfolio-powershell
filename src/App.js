@@ -10,7 +10,10 @@ function App() {
 }
 
 // Header Component
-const Header = ({ scrollToSection }) => {
+const Header = ({ sections, scrollToSection }) => {
+
+  const accentColor = '#FF6F61'; // Coral
+
   const style = {
     header: {
       display: 'flex',
@@ -40,7 +43,7 @@ const Header = ({ scrollToSection }) => {
       fontSize: '1rem',
     },
     navItemHover: {
-      color: '#61dafb',
+      color: accentColor,
       transform: 'scale(1.1)'
     },
   };
@@ -58,25 +61,26 @@ const Header = ({ scrollToSection }) => {
   return (
     <div style={style.header}>
       <div style={style.navItems}>
-        <div style={style.navItem} onClick={() => scrollToSection('about')} onMouseEnter={applyHoverEffect} onMouseLeave={removeHoverEffect}>
-          About Me
-        </div>
-        <div style={style.navItem} onClick={() => scrollToSection('projects')} onMouseEnter={applyHoverEffect} onMouseLeave={removeHoverEffect}>
-          Projects
-        </div>
-        <div style={style.navItem} onClick={() => scrollToSection('experience')} onMouseEnter={applyHoverEffect} onMouseLeave={removeHoverEffect}>
-          Experience
-        </div>
-        <div style={style.navItem} onClick={() => scrollToSection('contact')} onMouseEnter={applyHoverEffect} onMouseLeave={removeHoverEffect}>
-          Contact
-        </div>
+      {sections.map(section => (
+          <div
+            key={section.title}
+            style={style.navItem}
+            onClick={() => scrollToSection(section.ref)}
+            onMouseEnter={applyHoverEffect}
+            onMouseLeave={removeHoverEffect}
+          >
+            {section.title}
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
 // Section Component
-const Section = ({ id, title, children, refProp }) => {
+const Section = ({ id, title, children, refProp, backgroundColor }) => {
+  const textColor = backgroundColor === '#3B4C5A' ? '#E0E0E0' : '#333333';
+
   const style = {
     section: {
       height: '100vh',
@@ -87,12 +91,12 @@ const Section = ({ id, title, children, refProp }) => {
       textAlign: 'center',
       fontFamily: 'Roboto, sans-serif',
       paddingTop: '60px',
-      backgroundColor: '#f5f5f5',
-      color: '#333',
+      backgroundColor: backgroundColor,
+      color: textColor,
     },
     sectionTitle: {
       fontSize: '2.5rem',
-      color: '#282c34',
+      color: textColor, // Use textColor for better visibility
       marginBottom: '20px',
     },
     sectionContent: {
@@ -100,6 +104,7 @@ const Section = ({ id, title, children, refProp }) => {
       margin: '0 auto',
       lineHeight: '1.6',
       fontSize: '1.1rem',
+      color: textColor, // Use textColor for content as well
     },
   };
 
@@ -113,43 +118,84 @@ const Section = ({ id, title, children, refProp }) => {
   );
 };
 
+const AboutContent = () => (
+  <div>
+    <p>This is the About Me section.</p>
+  </div>
+);
+
+const ProjectsContent = () => (
+  <div>
+    <p>Projects Section</p>
+  </div>
+);
+
+const ExperienceContent = () => (
+  <div>
+    <p>Experience</p>
+    {/* Include timelines, skill charts, etc. */}
+  </div>
+);
+
+const ContactContent = () => (
+  <div>
+    <p>Contact</p>
+  </div>
+);
+
+
 const Portfolio = () => {
+
   const aboutRef = useRef(null);
   const projectsRef = useRef(null);
   const experienceRef = useRef(null);
   const contactRef = useRef(null);
+  
+  
+  const sections = [
+    { title: 'About Me', ref: aboutRef, ContentComponent: AboutContent },
+    { title: 'Projects', ref: projectsRef, ContentComponent: ProjectsContent },
+    { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent },
+    { title: 'Contact', ref: contactRef, ContentComponent: ContactContent },
+  ];
+  const alternatingColors = ['#A3B7C0', '#3B4C5A'];  // Replace '#f5f5f5' with a softer color if needed
+
 
   // Function to handle smooth scrolling and hash update
-  const scrollToSection = (sectionId) => {
-    const ref = { about: aboutRef, projects: projectsRef, experience: experienceRef, contact: contactRef }[sectionId];
-    window.history.pushState({}, '', `#${sectionId}`);
-    window.scrollTo({
-      top: ref.current.offsetTop,
-      behavior: 'smooth'
-    });
+  const scrollToSection = (ref) => {
+    if (ref && ref.current) {
+      window.history.pushState({}, '', `#${ref.current.id}`);
+      window.scrollTo({
+        top: ref.current.offsetTop,
+        behavior: 'smooth'
+      });
+    }
   };
+  
 
   // Effect to handle hash links (deep linking)
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
-    if (hash) scrollToSection(hash);
+    const sectionToScroll = sections.find(section => section.title.toLowerCase().replace(/\s+/g, '-') === hash);
+    if (sectionToScroll) {
+      scrollToSection(sectionToScroll.ref);
+    }
   }, []);
 
   return (
     <div>
-      <Header scrollToSection={scrollToSection} />
-      <Section id="about" title="About Me" refProp={aboutRef}>
-        {/* Content for About Me */}
-      </Section>
-      <Section id="projects" title="Projects" refProp={projectsRef}>
-        {/* Content for Projects */}
-      </Section>
-      <Section id="experience" title="Experience" refProp={experienceRef}>
-        {/* Content for Experience */}
-      </Section>
-      <Section id="contact" title="Contact" refProp={contactRef}>
-        {/* Content for Contact */}
-      </Section>
+      <Header sections={sections} scrollToSection={scrollToSection} />
+      {sections.map((section, index) => (
+        <Section 
+          key={section.title}
+          id={section.title.toLowerCase().replace(/\s+/g, '-')} 
+          title={section.title} 
+          refProp={section.ref} 
+          backgroundColor={alternatingColors[index % 2]}
+        >
+          <section.ContentComponent />
+        </Section>
+      ))}
     </div>
   );
 }
