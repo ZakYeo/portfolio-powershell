@@ -78,7 +78,7 @@ const Header = ({ sections, scrollToSection }) => {
 };
 
 // Section Component
-const Section = ({ id, title, children, refProp, backgroundColor }) => {
+const Section = ({ id, title, children, refProp, backgroundColor, nextBackgroundColor }) => {
   const textColor = backgroundColor === '#3B4C5A' ? '#E0E0E0' : '#333333';
 
   const style = {
@@ -93,6 +93,7 @@ const Section = ({ id, title, children, refProp, backgroundColor }) => {
       paddingTop: '60px',
       backgroundColor: backgroundColor,
       color: textColor,
+      position: 'relative'
     },
     sectionTitle: {
       fontSize: '2.5rem',
@@ -106,14 +107,35 @@ const Section = ({ id, title, children, refProp, backgroundColor }) => {
       fontSize: '1.1rem',
       color: textColor, // Use textColor for content as well
     },
+    gradientTop: {
+      display: 'block',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '50px', // Subtle gradient height
+      background: `linear-gradient(to bottom, ${backgroundColor}, transparent)`,
+      zIndex: 1,
+    },
+    gradientBottom: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: '50px', // Consistent height for all sections
+      background: `linear-gradient(to top, ${nextBackgroundColor}, transparent)`,
+      zIndex: 1,
+    },
   };
 
   return (
     <div ref={refProp} style={style.section} id={id}>
+      <div style={style.gradientTop}></div>
       <h2 style={style.sectionTitle}>{title}</h2>
       <div style={style.sectionContent}>
         {children}
       </div>
+      <div style={style.gradientBottom}></div>
     </div>
   );
 };
@@ -192,6 +214,7 @@ const Portfolio = () => {
           title={section.title} 
           refProp={section.ref} 
           backgroundColor={alternatingColors[index % 2]}
+          nextBackgroundColor={index < sections.length - 1 ? alternatingColors[(index + 1) % 2] : alternatingColors[index % 2]}
         >
           <section.ContentComponent />
         </Section>
