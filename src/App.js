@@ -97,7 +97,7 @@ const Section = ({ id, title, children, refProp, backgroundColor, nextBackground
     },
     sectionTitle: {
       fontSize: '2.5rem',
-      color: textColor, // Use textColor for better visibility
+      color: textColor,
       marginBottom: '20px',
     },
     sectionContent: {
@@ -105,7 +105,7 @@ const Section = ({ id, title, children, refProp, backgroundColor, nextBackground
       margin: '0 auto',
       lineHeight: '1.6',
       fontSize: '1.1rem',
-      color: textColor, // Use textColor for content as well
+      color: textColor,
     },
     gradientTop: {
       display: 'block',
@@ -113,7 +113,7 @@ const Section = ({ id, title, children, refProp, backgroundColor, nextBackground
       top: 0,
       left: 0,
       width: '100%',
-      height: '50px', // Subtle gradient height
+      height: '30px', 
       background: `linear-gradient(to bottom, ${backgroundColor}, transparent)`,
       zIndex: 1,
     },
@@ -122,7 +122,7 @@ const Section = ({ id, title, children, refProp, backgroundColor, nextBackground
       bottom: 0,
       left: 0,
       width: '100%',
-      height: '50px', // Consistent height for all sections
+      height: '30px',
       background: `linear-gradient(to top, ${nextBackgroundColor}, transparent)`,
       zIndex: 1,
     },
@@ -155,7 +155,6 @@ const ProjectsContent = () => (
 const ExperienceContent = () => (
   <div>
     <p>Experience</p>
-    {/* Include timelines, skill charts, etc. */}
   </div>
 );
 
@@ -180,7 +179,7 @@ const Portfolio = () => {
     { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent },
     { title: 'Contact', ref: contactRef, ContentComponent: ContactContent },
   ];
-  const alternatingColors = ['#A3B7C0', '#3B4C5A'];  // Replace '#f5f5f5' with a softer color if needed
+  const alternatingColors = ['#A3B7C0', '#3B4C5A']; 
 
 
   // Function to handle smooth scrolling and hash update
