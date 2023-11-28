@@ -113,8 +113,8 @@ const Section = ({ id, title, children, refProp, backgroundColor, nextBackground
       top: 0,
       left: 0,
       width: '100%',
-      height: '30px', 
-      background: `linear-gradient(to bottom, ${backgroundColor}, transparent)`,
+      height: '60px', 
+      background: `linear-gradient(to bottom, ${backgroundColor}, transparent 70%)`,  
       zIndex: 1,
     },
     gradientBottom: {
@@ -122,8 +122,8 @@ const Section = ({ id, title, children, refProp, backgroundColor, nextBackground
       bottom: 0,
       left: 0,
       width: '100%',
-      height: '30px',
-      background: `linear-gradient(to top, ${nextBackgroundColor}, transparent)`,
+      height: '60px',
+      background: `linear-gradient(to top, ${nextBackgroundColor}, transparent 70%)`, 
       zIndex: 1,
     },
   };
@@ -179,7 +179,7 @@ const Portfolio = () => {
     { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent },
     { title: 'Contact', ref: contactRef, ContentComponent: ContactContent },
   ];
-  const alternatingColors = ['#A3B7C0', '#B2B8A3']; 
+  const alternatingColors = ['#A3B7C0', '#3B4C5A']; 
 
 
   // Function to handle smooth scrolling and hash update
