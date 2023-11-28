@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import { FaHome } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import './App.css';
 
 function App() {
@@ -13,6 +15,7 @@ function App() {
 const Header = ({ sections, scrollToSection }) => {
 
   const accentColor = '#FF6F61'; // Coral
+  const [hoveredHome, setHoveredHome] = React.useState(false);
 
   const style = {
     header: {
@@ -47,6 +50,14 @@ const Header = ({ sections, scrollToSection }) => {
       transform: 'scale(1.1)'
     },
   };
+  const homeIconStyle = {
+    ...style.navItem, // Spread existing nav item styles
+    fontSize: '1.5rem', // Increase home icon size
+    ...(hoveredHome ? style.navItemHover : {}),
+  };
+
+  const onHomeMouseEnter = () => setHoveredHome(true);
+  const onHomeMouseLeave = () => setHoveredHome(false);
 
   const applyHoverEffect = (e) => {
     e.target.style.color = style.navItemHover.color;
@@ -61,24 +72,27 @@ const Header = ({ sections, scrollToSection }) => {
   return (
     <div style={style.header}>
       <div style={style.navItems}>
-      {sections.map(section => (
-          <div
-            key={section.title}
-            style={style.navItem}
-            onClick={() => scrollToSection(section.ref)}
-            onMouseEnter={applyHoverEffect}
-            onMouseLeave={removeHoverEffect}
-          >
-            {section.title}
-          </div>
-        ))}
+        {sections.map(section => {
+          const isAboutSection = section.title === 'About Me';
+          return (
+            <div
+              key={section.title}
+              style={isAboutSection ? homeIconStyle : style.navItem}
+              onClick={() => scrollToSection(section.ref)}
+              onMouseEnter={isAboutSection ? onHomeMouseEnter : applyHoverEffect}
+              onMouseLeave={isAboutSection ? onHomeMouseLeave : removeHoverEffect}
+            >
+              {isAboutSection ? <FaHome /> : section.title}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
 
 // Section Component
-const Section = ({ id, title, children, refProp, backgroundColor, nextBackgroundColor }) => {
+const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }) => {
   const textColor = backgroundColor === '#3B4C5A' ? '#E0E0E0' : '#333333';
 
   const style = {
@@ -131,7 +145,6 @@ const Section = ({ id, title, children, refProp, backgroundColor, nextBackground
   return (
     <div ref={refProp} style={style.section} id={id}>
       <div style={style.gradientTop}></div>
-      <h2 style={style.sectionTitle}>{title}</h2>
       <div style={style.sectionContent}>
         {children}
       </div>
@@ -140,11 +153,52 @@ const Section = ({ id, title, children, refProp, backgroundColor, nextBackground
   );
 };
 
-const AboutContent = () => (
-  <div>
-    <p>This is the About Me section.</p>
-  </div>
-);
+const AboutContent = () => {
+  const iconStyle = {
+    cursor: 'pointer',
+    margin: '0 10px',
+    fontSize: '24px', 
+    color: 'rgba(255, 255, 255, 0.7)',
+  };
+
+  const hoverStyle = {
+    color: '#FF6F61', // Hover color
+  };
+
+  const [hoveredIcon, setHoveredIcon] = React.useState(null);
+
+  const applyIconHoverEffect = (iconName) => {
+    setHoveredIcon(iconName);
+  };
+
+  const removeIconHoverEffect = () => {
+    setHoveredIcon(null);
+  };
+
+  return (
+    <div>
+      <h2 style={{ fontSize: '2.5rem' }}>Hey! 👋</h2>
+      <h2>I'm Zak Yeomanson.</h2>
+      <div>
+        <FaLinkedin 
+          style={hoveredIcon === 'linkedin' ? {...iconStyle, ...hoverStyle} : iconStyle}
+          onMouseEnter={() => applyIconHoverEffect('linkedin')}
+          onMouseLeave={removeIconHoverEffect}
+        />
+        <FaGithub 
+          style={hoveredIcon === 'github' ? {...iconStyle, ...hoverStyle} : iconStyle}
+          onMouseEnter={() => applyIconHoverEffect('github')}
+          onMouseLeave={removeIconHoverEffect}
+        />
+        <FaEnvelope 
+          style={hoveredIcon === 'email' ? {...iconStyle, ...hoverStyle} : iconStyle}
+          onMouseEnter={() => applyIconHoverEffect('email')}
+          onMouseLeave={removeIconHoverEffect}
+        />
+      </div>
+    </div>
+  );
+};
 
 const ProjectsContent = () => (
   <div>
