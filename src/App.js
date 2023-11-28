@@ -179,7 +179,7 @@ const Portfolio = () => {
     { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent },
     { title: 'Contact', ref: contactRef, ContentComponent: ContactContent },
   ];
-  const alternatingColors = ['#A3B7C0', '#3B4C5A']; 
+  const alternatingColors = ['#A3B7C0', '#B2B8A3']; 
 
 
   // Function to handle smooth scrolling and hash update
