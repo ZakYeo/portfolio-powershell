@@ -51,8 +51,8 @@ const Header = ({ sections, scrollToSection }) => {
     },
   };
   const homeIconStyle = {
-    ...style.navItem, // Spread existing nav item styles
-    fontSize: '1.5rem', // Increase home icon size
+    ...style.navItem,
+    fontSize: '1.5rem',
     ...(hoveredHome ? style.navItemHover : {}),
   };
 
@@ -212,9 +212,9 @@ const ExperienceContent = () => (
   </div>
 );
 
-const ContactContent = () => (
+const BlogContent = () => (
   <div>
-    <p>Contact</p>
+    <p>Blog</p>
   </div>
 );
 
@@ -224,14 +224,14 @@ const Portfolio = () => {
   const aboutRef = useRef(null);
   const projectsRef = useRef(null);
   const experienceRef = useRef(null);
-  const contactRef = useRef(null);
+  const blogRef = useRef(null);
   
   
   const sections = [
     { title: 'About Me', ref: aboutRef, ContentComponent: AboutContent },
     { title: 'Projects', ref: projectsRef, ContentComponent: ProjectsContent },
     { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent },
-    { title: 'Contact', ref: contactRef, ContentComponent: ContactContent },
+    { title: 'Blog', ref: blogRef, ContentComponent: BlogContent },
   ];
   const alternatingColors = ['#A3B7C0', '#3B4C5A']; 
 
