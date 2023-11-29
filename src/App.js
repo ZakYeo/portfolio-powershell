@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaHome } from 'react-icons/fa';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import './App.css';
@@ -209,11 +209,95 @@ const AboutContent = () => {
   );
 };
 
-const ProjectsContent = () => (
-  <div>
-    <p>Projects Section</p>
-  </div>
-);
+
+
+const ProjectsContent = () => {
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [currentProject, setCurrentProject] = useState(null);
+  const exampleProjects = [
+    { title: "Project 1", description: "Description of Project 1", imageUrl: "url-to-image-1" },
+    { title: "Project 2", description: "Description of Project 2", imageUrl: "url-to-image-2" },
+  ];
+
+  useEffect(() => {
+    setCurrentProject(exampleProjects[currentProjectIndex]);
+  }, [currentProjectIndex]);
+
+  const navigateRight = () => {
+    setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % exampleProjects.length);
+  };
+
+  const navigateLeft = () => {
+    setCurrentProjectIndex((prevIndex) => (prevIndex - 1 + exampleProjects.length) % exampleProjects.length);
+  };
+
+  const projectStyle = {
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      maxWidth: '80%',
+      margin: '0 auto',
+      padding: '20px 0',
+    },
+    cardContainer: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      flexBasis: '80%', // Adjust as necessary
+    },
+    card: {
+      flexBasis: '45%',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+      padding: '20px',
+      textAlign: 'center',
+      minHeight: '300px',
+      minWidth: '400px',
+    },
+    image: {
+      maxWidth: '100%',
+      height: 'auto',
+    },
+    title: {
+      fontSize: '1.8rem',
+      margin: '10px 0',
+    },
+    description: {
+      fontSize: '1.2rem',
+    },
+    arrow: {
+      fontSize: '2rem',
+      cursor: 'pointer',
+      userSelect: 'none',
+    },
+  };
+
+  return (
+    <div style={projectStyle.container}>
+      <span style={projectStyle.arrow} onClick={navigateLeft}>{"<"}</span>
+      <div style={projectStyle.cardContainer}>
+        {currentProject && (
+          <>
+            <div style={projectStyle.card}>
+              <img style={projectStyle.image} src={currentProject.imageUrl} alt={currentProject.title} />
+            </div>
+            <div style={projectStyle.card}>
+              <h3 style={projectStyle.title}>{currentProject.title}</h3>
+              <p style={projectStyle.description}>{currentProject.description}</p>
+            </div>
+          </>
+        )}
+      </div>
+      <span style={projectStyle.arrow} onClick={navigateRight}>{">"}</span>
+    </div>
+  );
+};
+
+
+
+
+
+
 
 const ExperienceContent = () => (
   <div>
