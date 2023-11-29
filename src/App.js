@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaHome } from 'react-icons/fa';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
+import national_trust_1 from './assets/national_trust_1.jpeg';
 import './App.css';
 
 function App() {
@@ -215,7 +216,7 @@ const ProjectsContent = () => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [currentProject, setCurrentProject] = useState(null);
   const exampleProjects = [
-    { title: "Project 1", description: "Description of Project 1", imageUrl: "url-to-image-1" },
+    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust. This application, built using React Native with expo-go, utilizes data from the National Trust to present location and event information within the app interface.", imageUrl: national_trust_1 },
     { title: "Project 2", description: "Description of Project 2", imageUrl: "url-to-image-2" },
   ];
 
@@ -244,7 +245,7 @@ const ProjectsContent = () => {
       display: 'flex',
       justifyContent: 'space-around',
       alignItems: 'center',
-      flexBasis: '80%', // Adjust as necessary
+      flexBasis: '80%',
     },
     card: {
       flexBasis: '45%',
