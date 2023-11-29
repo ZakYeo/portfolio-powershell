@@ -159,10 +159,12 @@ const AboutContent = () => {
     margin: '0 10px',
     fontSize: '24px', 
     color: 'rgba(255, 255, 255, 0.7)',
+    transition: 'color 0.3s, transform 0.3s',
   };
 
   const hoverStyle = {
     color: '#FF6F61', // Hover color
+    transform: 'scale(1.1)' // Enlarge effect
   };
 
   const [hoveredIcon, setHoveredIcon] = React.useState(null);
@@ -175,6 +177,10 @@ const AboutContent = () => {
     setHoveredIcon(null);
   };
 
+  const handleIconClick = (url) => {
+    window.open(url, '_blank');
+  };
+
   return (
     <div>
       <h2 style={{ fontSize: '2.5rem' }}>Hey! 👋</h2>
@@ -184,16 +190,19 @@ const AboutContent = () => {
           style={hoveredIcon === 'linkedin' ? {...iconStyle, ...hoverStyle} : iconStyle}
           onMouseEnter={() => applyIconHoverEffect('linkedin')}
           onMouseLeave={removeIconHoverEffect}
+          onClick={() => handleIconClick('https://www.linkedin.com/in/zak-yeomanson/')}
         />
         <FaGithub 
           style={hoveredIcon === 'github' ? {...iconStyle, ...hoverStyle} : iconStyle}
           onMouseEnter={() => applyIconHoverEffect('github')}
           onMouseLeave={removeIconHoverEffect}
+          onClick={() => handleIconClick('https://github.com/ZakYeo')}
         />
         <FaEnvelope 
           style={hoveredIcon === 'email' ? {...iconStyle, ...hoverStyle} : iconStyle}
           onMouseEnter={() => applyIconHoverEffect('email')}
           onMouseLeave={removeIconHoverEffect}
+          onClick={() => handleIconClick('mailto:zakyeomanson@gmail.com')}
         />
       </div>
     </div>
