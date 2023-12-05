@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaHome } from 'react-icons/fa';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import national_trust_1 from './assets/national_trust_1.jpeg';
+import zogs_1 from './assets/ZOGS_1.png'
 import './App.css';
 
 function App() {
@@ -116,7 +117,7 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
       marginBottom: '20px',
     },
     sectionContent: {
-      maxWidth: '600px',
+      maxWidth: '95%',
       margin: '0 auto',
       lineHeight: '1.6',
       fontSize: '1.1rem',
@@ -216,8 +217,8 @@ const ProjectsContent = () => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [currentProject, setCurrentProject] = useState(null);
   const exampleProjects = [
-    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust. This application, built using React Native with expo-go, utilizes data from the National Trust to present location and event information within the app interface.", imageUrl: national_trust_1 },
-    { title: "Project 2", description: "Description of Project 2", imageUrl: "url-to-image-2" },
+    { title: "Zak's Online Gaming Store", description: "An engaging and interactive online store for all gaming needs.", imageUrl: zogs_1 }, // Update the path accordingly
+    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 }, // Update the path accordingly
   ];
 
   useEffect(() => {
@@ -237,26 +238,49 @@ const ProjectsContent = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      maxWidth: '80%',
+      maxWidth: '100%',
       margin: '0 auto',
       padding: '20px 0',
     },
     cardContainer: {
       display: 'flex',
       justifyContent: 'space-around',
+      alignItems: 'flex-start',
+      flexBasis: '100%',
+    },cardContainerVertical: {
+      display: 'flex',
+      flexDirection: 'column', 
       alignItems: 'center',
-      flexBasis: '80%',
+      maxWidth: '600px', 
+      margin: '20px auto',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
     },
-    card: {
-      flexBasis: '45%',
+
+    cardContainerHorizontal: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      maxWidth: '1200px',
+      margin: '20px auto',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+    },
+    imageCard: {
+      flexBasis: '50%', 
+      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+      marginRight: '20px', 
+      textAlign: 'center',
+    },
+    textCard: {
+      flexBasis: '50%',
       boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
       padding: '20px',
-      textAlign: 'center',
-      minHeight: '300px',
-      minWidth: '400px',
+      textAlign: 'left',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
     },
     image: {
-      maxWidth: '100%',
+      width: '100%', 
       height: 'auto',
     },
     title: {
@@ -273,22 +297,40 @@ const ProjectsContent = () => {
     },
   };
 
+  const getImageStyle = (project) => ({
+    width: project.title.includes("Zak's Online Gaming Store") ? '100%' : '50%',
+    height: 'auto',
+    objectFit: 'contain',
+  });
+
   return (
     <div style={projectStyle.container}>
       <span style={projectStyle.arrow} onClick={navigateLeft}>{"<"}</span>
-      <div style={projectStyle.cardContainer}>
-        {currentProject && (
-          <>
-            <div style={projectStyle.card}>
-              <img style={projectStyle.image} src={currentProject.imageUrl} alt={currentProject.title} />
-            </div>
-            <div style={projectStyle.card}>
-              <h3 style={projectStyle.title}>{currentProject.title}</h3>
-              <p style={projectStyle.description}>{currentProject.description}</p>
-            </div>
-          </>
-        )}
-      </div>
+      {currentProject && (currentProject.title.includes("Zak's Online Gaming Store") ? (
+        <div style={projectStyle.cardContainerVertical}>
+          <img 
+            style={getImageStyle(currentProject)} 
+            src={currentProject.imageUrl} 
+            alt={currentProject.title} 
+          />
+          <div>
+            <h3 style={projectStyle.title}>{currentProject.title}</h3>
+            <p style={projectStyle.description}>{currentProject.description}</p>
+          </div>
+        </div>
+      ) : (
+        <div style={projectStyle.cardContainerHorizontal}>
+          <img 
+            style={getImageStyle(currentProject)} 
+            src={currentProject.imageUrl} 
+            alt={currentProject.title} 
+          />
+          <div style={{ width: '45%' }}>
+            <h3 style={projectStyle.title}>{currentProject.title}</h3>
+            <p style={projectStyle.description}>{currentProject.description}</p>
+          </div>
+        </div>
+      ))}
       <span style={projectStyle.arrow} onClick={navigateRight}>{">"}</span>
     </div>
   );
