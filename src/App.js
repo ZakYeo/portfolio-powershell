@@ -221,7 +221,7 @@ const ProjectsContent = () => {
   const exampleProjects = [
     { title: "Zak's Online Gaming Store", description: "An engaging and interactive online store for all gaming needs.", imageUrl: zogs_1 },
     { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 },
-    { title: "VSCode GPT", description: "Example", imageUrl: vscode_gpt_1 },
+    { title: "VSCode GPT", description: "Example2", imageUrl: vscode_gpt_1 },
   ];
 
   useEffect(() => {
