@@ -247,11 +247,12 @@ const ProjectsContent = () => {
       justifyContent: 'space-around',
       alignItems: 'flex-start',
       flexBasis: '100%',
-    },cardContainerVertical: {
+    },
+    cardContainerVertical: {
       display: 'flex',
       flexDirection: 'column', 
       alignItems: 'center',
-      maxWidth: '600px', 
+      maxWidth: '75%', 
       margin: '20px auto',
       boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
     },
@@ -260,7 +261,7 @@ const ProjectsContent = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      maxWidth: '1200px',
+      maxWidth: '75%',
       margin: '20px auto',
       boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
     },
