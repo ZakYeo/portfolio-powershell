@@ -3,6 +3,7 @@ import { FaHome } from 'react-icons/fa';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import national_trust_1 from './assets/national_trust_1.jpeg';
 import zogs_1 from './assets/ZOGS_1.png'
+import vscode_gpt_1 from './assets/vscode-gpt-1.png'
 import './App.css';
 
 function App() {
@@ -218,8 +219,9 @@ const ProjectsContent = () => {
   const [currentProject, setCurrentProject] = useState(null);
   const [classList, setClassList] = useState([]);
   const exampleProjects = [
-    { title: "Zak's Online Gaming Store", description: "An engaging and interactive online store for all gaming needs.", imageUrl: zogs_1 }, // Update the path accordingly
-    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 }, // Update the path accordingly
+    { title: "Zak's Online Gaming Store", description: "An engaging and interactive online store for all gaming needs.", imageUrl: zogs_1 },
+    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 },
+    { title: "VSCode GPT", description: "Example", imageUrl: vscode_gpt_1 },
   ];
 
   useEffect(() => {
@@ -308,7 +310,7 @@ const ProjectsContent = () => {
   };
 
   const getImageStyle = (project) => ({
-    width: project.title.includes("Zak's Online Gaming Store") ? '100%' : '50%',
+    width: project.title.includes("National Trust Re-Design") ? '50%' : '100%',
     height: 'auto',
     objectFit: 'contain',
   });
@@ -317,7 +319,7 @@ const ProjectsContent = () => {
     <div style={projectStyle.container}>
       <span style={projectStyle.arrow} onClick={navigateLeft}>{"<"}</span>
       <div id="project-cards" className={classList.join(" ")}>
-      {currentProject && (currentProject.title.includes("Zak's Online Gaming Store") ? (
+      {currentProject && (currentProject.title.includes("Zak's Online Gaming Store") || currentProject.title.includes("VSCode GPT") ? (
         <div style={projectStyle.cardContainerVertical}>
           <img 
             style={getImageStyle(currentProject)} 
