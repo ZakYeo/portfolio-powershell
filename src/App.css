@@ -13,6 +13,49 @@
   }
 }
 
+.swipeLeft {
+  transition: transform 300ms;
+  transform: translateX(-100%);
+}
+
+.swipeRight {
+  transition: transform 300ms;
+  transform: translateX(100%);
+}
+
+.swipeRightHalf {
+  transition: transform 300ms;
+  transform: translateX(25%);
+}
+
+@keyframes swipeFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.swipeFromRight {
+  animation: swipeFromRight 0.3s ease-in-out; /* Adjust the duration and timing function as needed */
+}
+
+@keyframes swipeFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.swipeFromLeft {
+  animation: swipeFromLeft 0.3s ease-in-out; /* Adjust the duration and timing function as needed */
+}
+
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

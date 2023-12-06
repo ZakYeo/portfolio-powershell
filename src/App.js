@@ -216,6 +216,7 @@ const AboutContent = () => {
 const ProjectsContent = () => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [currentProject, setCurrentProject] = useState(null);
+  const [classList, setClassList] = useState([]);
   const exampleProjects = [
     { title: "Zak's Online Gaming Store", description: "An engaging and interactive online store for all gaming needs.", imageUrl: zogs_1 }, // Update the path accordingly
     { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 }, // Update the path accordingly
@@ -226,11 +227,19 @@ const ProjectsContent = () => {
   }, [currentProjectIndex]);
 
   const navigateRight = () => {
-    setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % exampleProjects.length);
+    setClassList(["swipeLeft"]);
+    setTimeout(() => {
+      setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % exampleProjects.length);
+      setClassList(['swipeFromRight'])
+    }, 300);
   };
 
   const navigateLeft = () => {
-    setCurrentProjectIndex((prevIndex) => (prevIndex - 1 + exampleProjects.length) % exampleProjects.length);
+    setClassList(["swipeRight"]);
+    setTimeout(() => {
+      setCurrentProjectIndex((prevIndex) => (prevIndex - 1 + exampleProjects.length) % exampleProjects.length);
+      setClassList(['swipeFromLeft']);
+    }, 300);
   };
 
   const projectStyle = {
@@ -307,6 +316,7 @@ const ProjectsContent = () => {
   return (
     <div style={projectStyle.container}>
       <span style={projectStyle.arrow} onClick={navigateLeft}>{"<"}</span>
+      <div id="project-cards" className={classList.join(" ")}>
       {currentProject && (currentProject.title.includes("Zak's Online Gaming Store") ? (
         <div style={projectStyle.cardContainerVertical}>
           <img 
@@ -332,6 +342,7 @@ const ProjectsContent = () => {
           </div>
         </div>
       ))}
+      </div>
       <span style={projectStyle.arrow} onClick={navigateRight}>{">"}</span>
     </div>
   );
