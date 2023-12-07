@@ -4,6 +4,7 @@ import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import national_trust_1 from './assets/national_trust_1.jpeg';
 import zogs_1 from './assets/ZOGS_1.png'
 import vscode_gpt_1 from './assets/vscode-gpt-1.png'
+import receipt_ranger_1 from './assets/receipt-ranger-1.jpeg'
 import './App.css';
 
 function App() {
@@ -219,9 +220,10 @@ const ProjectsContent = () => {
   const [currentProject, setCurrentProject] = useState(null);
   const [classList, setClassList] = useState([]);
   const exampleProjects = [
-    { title: "Zak's Online Gaming Store", description: "An engaging and interactive online store for all gaming needs.", imageUrl: zogs_1 },
     { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 },
-    { title: "VSCode GPT", description: "Example2", imageUrl: vscode_gpt_1 },
+    { title: "VSCode GPT", description: "Visual Studio Code extension designed to improve & optimise workflow by allowing to chat with OpenAI's ChatGPT directly from your editor. You can use it to generate code or comments on the fly, or simply have conversations with it that are saved and persist in storage.", imageUrl: vscode_gpt_1 },
+    { title: "Zak's Online Gaming Store", description: "Built using Python's Flask library for the backend and HTML, CSS & JavaScript for the frontend. ZOGS interfaces with either a MongoDB or Firebase Realtime Database to fetch and dynamically display a list of games on the webpage. The information pertaining to each game is modifiable by administrators who are granted permissions in the database. In addition to editing game information, administrators have the ability to add or remove games, and to view the website's 'logs'. ZOGS Gaming Store also interacts with two APIs: The Cloudinary API: Handles the saving of images in the database. The Steam API: Allows the viewing of the top achievements for the selected game.", imageUrl: zogs_1 },
+    { title: "Receipt Tracking App", description: "A mobile application written using React Native with expo-go. This prototype app functions as an expense tracker and uses optical character recognition (OCR) to save your expenses to a database.", imageUrl: receipt_ranger_1 },
   ];
 
   useEffect(() => {
@@ -310,7 +312,7 @@ const ProjectsContent = () => {
   };
 
   const getImageStyle = (project) => ({
-    width: project.title.includes("National Trust Re-Design") ? '50%' : '100%',
+    width: project.title.includes("National Trust Re-Design") || project.title.includes("Receipt Tracking App") ? '50%' : '100%',
     height: 'auto',
     objectFit: 'contain',
   });
