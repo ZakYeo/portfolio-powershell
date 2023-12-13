@@ -27,7 +27,7 @@ const Header = ({ sections, scrollToSection }) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: '#282c34',
-      padding: '15px 20px',
+      padding: '15px 0px 15px 0px',
       color: '#FFFFFF',
       position: 'fixed',
       top: 0,
@@ -108,7 +108,6 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
       justifyContent: 'center',
       textAlign: 'center',
       fontFamily: 'Roboto, sans-serif',
-      paddingTop: '60px',
       backgroundColor: backgroundColor,
       color: textColor,
       position: 'relative'
@@ -117,13 +116,6 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
       fontSize: '2.5rem',
       color: textColor,
       marginBottom: '20px',
-    },
-    sectionContent: {
-      maxWidth: '95%',
-      margin: '0 auto',
-      lineHeight: '1.6',
-      fontSize: '1.1rem',
-      color: textColor,
     },
     gradientTop: {
       display: 'block',
@@ -149,9 +141,7 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
   return (
     <div ref={refProp} style={style.section} id={id}>
       <div style={style.gradientTop}></div>
-      <div style={style.sectionContent}>
         {children}
-      </div>
       <div style={style.gradientBottom}></div>
     </div>
   );
@@ -186,7 +176,7 @@ const AboutContent = () => {
   };
 
   return (
-    <div>
+    <div style={{paddingTop: '60px'}}>
       <h2 style={{ fontSize: '2.5rem' }}>Hey! 👋</h2>
       <h2>I'm Zak Yeomanson.</h2>
       <div>
@@ -216,138 +206,50 @@ const AboutContent = () => {
 
 
 const ProjectsContent = () => {
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [currentProject, setCurrentProject] = useState(null);
-  const [classList, setClassList] = useState([]);
-  const exampleProjects = [
+
+  const [flexDirection, setFlexDirection] = useState("")
+  const [projectIndex, setProjectIndex] = useState(1);
+
+  const projects = [
     { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 },
     { title: "VSCode GPT", description: "Visual Studio Code extension designed to improve & optimise workflow by allowing to chat with OpenAI's ChatGPT directly from your editor. You can use it to generate code or comments on the fly, or simply have conversations with it that are saved and persist in storage.", imageUrl: vscode_gpt_1 },
     { title: "Zak's Online Gaming Store", description: "Built using Python's Flask library for the backend and HTML, CSS & JavaScript for the frontend. ZOGS interfaces with either a MongoDB or Firebase Realtime Database to fetch and dynamically display a list of games on the webpage. The information pertaining to each game is modifiable by administrators who are granted permissions in the database. In addition to editing game information, administrators have the ability to add or remove games, and to view the website's 'logs'. ZOGS Gaming Store also interacts with two APIs: The Cloudinary API: Handles the saving of images in the database. The Steam API: Allows the viewing of the top achievements for the selected game.", imageUrl: zogs_1 },
     { title: "Receipt Tracking App", description: "A mobile application written using React Native with expo-go. This prototype app functions as an expense tracker and uses optical character recognition (OCR) to save your expenses to a database.", imageUrl: receipt_ranger_1 },
   ];
 
-  useEffect(() => {
-    setCurrentProject(exampleProjects[currentProjectIndex]);
-  }, [currentProjectIndex]);
+  const handleClick = (direction) => {
+    let newIndex = projectIndex + direction;
+    
+    if(newIndex < 0){
+      // Out of range, loop
+      newIndex = projects.length - 1;
+    }else if(newIndex >= projects.length){
+      // Out of range, loop
+      newIndex = 0;
+    }
 
-  const navigateRight = () => {
-    setClassList(["swipeLeft"]);
-    setTimeout(() => {
-      setCurrentProjectIndex((prevIndex) => (prevIndex + 1) % exampleProjects.length);
-      setClassList(['swipeFromRight'])
-    }, 300);
-  };
+    setProjectIndex(newIndex);
 
-  const navigateLeft = () => {
-    setClassList(["swipeRight"]);
-    setTimeout(() => {
-      setCurrentProjectIndex((prevIndex) => (prevIndex - 1 + exampleProjects.length) % exampleProjects.length);
-      setClassList(['swipeFromLeft']);
-    }, 300);
-  };
-
-  const projectStyle = {
-    container: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      maxWidth: '100%',
-      margin: '0 auto',
-      padding: '20px 0',
-    },
-    cardContainer: {
-      display: 'flex',
-      justifyContent: 'space-around',
-      alignItems: 'flex-start',
-      flexBasis: '100%',
-    },
-    cardContainerVertical: {
-      display: 'flex',
-      flexDirection: 'column', 
-      alignItems: 'center',
-      maxWidth: '75%', 
-      margin: '20px auto',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-    },
-
-    cardContainerHorizontal: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
-      maxWidth: '75%',
-      margin: '20px auto',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-    },
-    imageCard: {
-      flexBasis: '50%', 
-      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-      marginRight: '20px', 
-      textAlign: 'center',
-    },
-    textCard: {
-      flexBasis: '50%',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-      padding: '20px',
-      textAlign: 'left',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-    },
-    image: {
-      width: '100%', 
-      height: 'auto',
-    },
-    title: {
-      fontSize: '1.8rem',
-      margin: '10px 0',
-    },
-    description: {
-      fontSize: '1.2rem',
-    },
-    arrow: {
-      fontSize: '2rem',
-      cursor: 'pointer',
-      userSelect: 'none',
-    },
-  };
-
-  const getImageStyle = (project) => ({
-    width: project.title.includes("National Trust Re-Design") || project.title.includes("Receipt Tracking App") ? '50%' : '100%',
-    height: 'auto',
-    objectFit: 'contain',
-  });
+  }
+  
 
   return (
-    <div style={projectStyle.container}>
-      <span style={projectStyle.arrow} onClick={navigateLeft}>{"<"}</span>
-      <div id="project-cards" className={classList.join(" ")}>
-      {currentProject && (currentProject.title.includes("Zak's Online Gaming Store") || currentProject.title.includes("VSCode GPT") ? (
-        <div style={projectStyle.cardContainerVertical}>
-          <img 
-            style={getImageStyle(currentProject)} 
-            src={currentProject.imageUrl} 
-            alt={currentProject.title} 
-          />
-          <div>
-            <h3 style={projectStyle.title}>{currentProject.title}</h3>
-            <p style={projectStyle.description}>{currentProject.description}</p>
-          </div>
+    <div style={{display: 'flex', width: '100%', justifyContent: 'space-between', fontSize: '1rem'}}>
+      
+      <span style={{display: 'flex', alignItems: 'center', padding: '0.4rem'}} onClick={() => handleClick(-1)}>{"<"}</span>
+      <div style={{display: 'flex', gap: '1rem', flexDirection: flexDirection}}>
+        <div>
+        <img  style={{maxHeight: "60vh", maxWidth: '45vw'}}
+              src={projects[projectIndex].imageUrl} 
+              alt={projects[projectIndex].title}
+            />
         </div>
-      ) : (
-        <div style={projectStyle.cardContainerHorizontal}>
-          <img 
-            style={getImageStyle(currentProject)} 
-            src={currentProject.imageUrl} 
-            alt={currentProject.title} 
-          />
-          <div style={{ width: '45%' }}>
-            <h3 style={projectStyle.title}>{currentProject.title}</h3>
-            <p style={projectStyle.description}>{currentProject.description}</p>
-          </div>
+        <div style={{maxWidth: '35vw', display: 'flex', flexDirection: 'column', gap: '2rem'}}>
+          <div>{projects[projectIndex].title}</div>
+          <div style={{alignSelf: 'center'}}>{projects[projectIndex].description}</div>
         </div>
-      ))}
       </div>
-      <span style={projectStyle.arrow} onClick={navigateRight}>{">"}</span>
+      <span style={{display: 'flex', alignItems: 'center', padding: '0.4rem'}} onClick={() => handleClick(1)}>{">"}</span>
     </div>
   );
 };
@@ -393,7 +295,7 @@ const Portfolio = () => {
     if (ref && ref.current) {
       window.history.pushState({}, '', `#${ref.current.id}`);
       window.scrollTo({
-        top: ref.current.offsetTop,
+        top: ref.current.offsetTop - 60, // Account for gradient
         behavior: 'smooth'
       });
     }
