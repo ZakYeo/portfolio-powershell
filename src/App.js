@@ -208,7 +208,9 @@ const AboutContent = () => {
 const ProjectsContent = () => {
 
   const [flexDirection, setFlexDirection] = useState("")
-  const [projectIndex, setProjectIndex] = useState(1);
+  const [projectIndex, setProjectIndex] = useState(0);
+  const [canScroll, setCanScroll] = useState(false);
+  const contentRef = useRef(null);
 
   const projects = [
     { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 },
@@ -219,7 +221,8 @@ const ProjectsContent = () => {
 
   const handleClick = (direction) => {
     let newIndex = projectIndex + direction;
-    
+
+        
     if(newIndex < 0){
       // Out of range, loop
       newIndex = projects.length - 1;
@@ -228,28 +231,50 @@ const ProjectsContent = () => {
       newIndex = 0;
     }
 
+    // Set flex direction based on project
+    if(projects[newIndex].title === "VSCode GPT" || 
+      projects[newIndex].title === "Zak's Online Gaming Store"
+    ){
+      setFlexDirection('column');
+    }else{
+      setFlexDirection("")
+    }
+
     setProjectIndex(newIndex);
 
   }
+
+  useEffect(() => {
+    const checkScroll = () => {
+      const element = contentRef.current;
+      if (element) {
+        // Check if the content height is greater than the container height
+        setCanScroll(element.scrollHeight > element.clientHeight);
+      }
+    };
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [projectIndex]); 
   
 
   return (
-    <div style={{display: 'flex', width: '100%', justifyContent: 'space-between', fontSize: '1rem'}}>
+    <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', fontSize: '1rem' }}>
       
-      <span style={{display: 'flex', alignItems: 'center', padding: '0.4rem'}} onClick={() => handleClick(-1)}>{"<"}</span>
-      <div style={{display: 'flex', gap: '1rem', flexDirection: flexDirection}}>
+      <span style={{ display: 'flex', alignItems: 'center', padding: '0.4rem' }} onClick={() => handleClick(-1)}>{"<"}</span>
+      <div style={{ display: 'flex', gap: '1rem', flexDirection: flexDirection, alignItems: flexDirection === "column" ? 'center' : ''}}>
         <div>
-        <img  style={{maxHeight: "60vh", maxWidth: '45vw'}}
-              src={projects[projectIndex].imageUrl} 
-              alt={projects[projectIndex].title}
-            />
+          <img style={{ maxHeight: "60vh", maxWidth: '45vw' }}
+               src={projects[projectIndex].imageUrl} 
+               alt={projects[projectIndex].title}
+          />
         </div>
-        <div style={{maxWidth: '35vw', display: 'flex', flexDirection: 'column', gap: '2rem'}}>
+        <div ref={contentRef} style={{ maxWidth: '35vw', maxHeight: '50vh', display: 'flex', flexDirection: 'column', gap: '2rem', overflow: canScroll ? 'scroll' : 'hidden', overflowX: 'hidden' }}>
           <div>{projects[projectIndex].title}</div>
-          <div style={{alignSelf: 'center'}}>{projects[projectIndex].description}</div>
+          <div style={{ alignSelf: 'center' }}>{projects[projectIndex].description}</div>
         </div>
       </div>
-      <span style={{display: 'flex', alignItems: 'center', padding: '0.4rem'}} onClick={() => handleClick(1)}>{">"}</span>
+      <span style={{ display: 'flex', alignItems: 'center', padding: '0.4rem' }} onClick={() => handleClick(1)}>{">"}</span>
     </div>
   );
 };
