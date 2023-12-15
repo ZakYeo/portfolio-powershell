@@ -6,11 +6,12 @@ import zogs_1 from './assets/ZOGS_1.png'
 import vscode_gpt_1 from './assets/vscode-gpt-1.png'
 import receipt_ranger_1 from './assets/receipt-ranger-1.jpeg'
 import './App.css';
-
+import { CCard, CCardImage, CCardBody, CCardTitle, CCardText, CRow, CCol, CCardFooter } from '@coreui/react';
+import '@coreui/coreui/dist/css/coreui.min.css'
 function App() {
   return (
     <div className="App">
-        <Portfolio />
+      <Portfolio />
     </div>
   );
 }
@@ -123,8 +124,8 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
       top: 0,
       left: 0,
       width: '100%',
-      height: '60px', 
-      background: `linear-gradient(to bottom, ${backgroundColor}, transparent 70%)`,  
+      height: '60px',
+      background: `linear-gradient(to bottom, ${backgroundColor}, transparent 70%)`,
       zIndex: 1,
     },
     gradientBottom: {
@@ -133,7 +134,7 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
       left: 0,
       width: '100%',
       height: '60px',
-      background: `linear-gradient(to top, ${nextBackgroundColor}, transparent 70%)`, 
+      background: `linear-gradient(to top, ${nextBackgroundColor}, transparent 70%)`,
       zIndex: 1,
     },
   };
@@ -141,7 +142,7 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
   return (
     <div ref={refProp} style={style.section} id={id}>
       <div style={style.gradientTop}></div>
-        {children}
+      {children}
       <div style={style.gradientBottom}></div>
     </div>
   );
@@ -151,7 +152,7 @@ const AboutContent = () => {
   const iconStyle = {
     cursor: 'pointer',
     margin: '0 10px',
-    fontSize: '24px', 
+    fontSize: '24px',
     color: 'rgba(255, 255, 255, 0.7)',
     transition: 'color 0.3s, transform 0.3s',
   };
@@ -176,24 +177,24 @@ const AboutContent = () => {
   };
 
   return (
-    <div style={{paddingTop: '60px'}}>
+    <div style={{ paddingTop: '60px' }}>
       <h2 style={{ fontSize: '2.5rem' }}>Hey! 👋</h2>
       <h2>I'm Zak Yeomanson.</h2>
       <div>
-        <FaLinkedin 
-          style={hoveredIcon === 'linkedin' ? {...iconStyle, ...hoverStyle} : iconStyle}
+        <FaLinkedin
+          style={hoveredIcon === 'linkedin' ? { ...iconStyle, ...hoverStyle } : iconStyle}
           onMouseEnter={() => applyIconHoverEffect('linkedin')}
           onMouseLeave={removeIconHoverEffect}
           onClick={() => handleIconClick('https://www.linkedin.com/in/zak-yeomanson/')}
         />
-        <FaGithub 
-          style={hoveredIcon === 'github' ? {...iconStyle, ...hoverStyle} : iconStyle}
+        <FaGithub
+          style={hoveredIcon === 'github' ? { ...iconStyle, ...hoverStyle } : iconStyle}
           onMouseEnter={() => applyIconHoverEffect('github')}
           onMouseLeave={removeIconHoverEffect}
           onClick={() => handleIconClick('https://github.com/ZakYeo')}
         />
-        <FaEnvelope 
-          style={hoveredIcon === 'email' ? {...iconStyle, ...hoverStyle} : iconStyle}
+        <FaEnvelope
+          style={hoveredIcon === 'email' ? { ...iconStyle, ...hoverStyle } : iconStyle}
           onMouseEnter={() => applyIconHoverEffect('email')}
           onMouseLeave={removeIconHoverEffect}
           onClick={() => handleIconClick('mailto:zakyeomanson@gmail.com')}
@@ -213,30 +214,30 @@ const ProjectsContent = () => {
   const contentRef = useRef(null);
 
   const projects = [
-    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1 },
+    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1, verticalImg: true },
     { title: "VSCode GPT", description: "Visual Studio Code extension designed to improve & optimise workflow by allowing to chat with OpenAI's ChatGPT directly from your editor. You can use it to generate code or comments on the fly, or simply have conversations with it that are saved and persist in storage.", imageUrl: vscode_gpt_1 },
     { title: "Zak's Online Gaming Store", description: "Built using Python's Flask library for the backend and HTML, CSS & JavaScript for the frontend. ZOGS interfaces with either a MongoDB or Firebase Realtime Database to fetch and dynamically display a list of games on the webpage. The information pertaining to each game is modifiable by administrators who are granted permissions in the database. In addition to editing game information, administrators have the ability to add or remove games, and to view the website's 'logs'. ZOGS Gaming Store also interacts with two APIs: The Cloudinary API: Handles the saving of images in the database. The Steam API: Allows the viewing of the top achievements for the selected game.", imageUrl: zogs_1 },
-    { title: "Receipt Tracking App", description: "A mobile application written using React Native with expo-go. This prototype app functions as an expense tracker and uses optical character recognition (OCR) to save your expenses to a database.", imageUrl: receipt_ranger_1 },
+    { title: "Receipt Tracking App", description: "A mobile application written using React Native with expo-go. This prototype app functions as an expense tracker and uses optical character recognition (OCR) to save your expenses to a database.", imageUrl: receipt_ranger_1, verticalImg: true },
   ];
 
   const handleClick = (direction) => {
     let newIndex = projectIndex + direction;
 
-        
-    if(newIndex < 0){
+
+    if (newIndex < 0) {
       // Out of range, loop
       newIndex = projects.length - 1;
-    }else if(newIndex >= projects.length){
+    } else if (newIndex >= projects.length) {
       // Out of range, loop
       newIndex = 0;
     }
 
     // Set flex direction based on project
-    if(projects[newIndex].title === "VSCode GPT" || 
+    if (projects[newIndex].title === "VSCode GPT" ||
       projects[newIndex].title === "Zak's Online Gaming Store"
-    ){
+    ) {
       setFlexDirection('column');
-    }else{
+    } else {
       setFlexDirection("")
     }
 
@@ -255,25 +256,20 @@ const ProjectsContent = () => {
     checkScroll();
     window.addEventListener('resize', checkScroll);
     return () => window.removeEventListener('resize', checkScroll);
-  }, [projectIndex]); 
-  
+  }, [projectIndex]);
+
 
   return (
-    <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', fontSize: '1rem' }}>
-      
+    <div style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
       <span style={{ display: 'flex', alignItems: 'center', padding: '0.4rem' }} onClick={() => handleClick(-1)}>{"<"}</span>
-      <div style={{ display: 'flex', gap: '1rem', flexDirection: flexDirection, alignItems: flexDirection === "column" ? 'center' : ''}}>
-        <div>
-          <img style={{ maxHeight: "60vh", maxWidth: '45vw' }}
-               src={projects[projectIndex].imageUrl} 
-               alt={projects[projectIndex].title}
-          />
-        </div>
-        <div ref={contentRef} style={{ maxWidth: '35vw', maxHeight: '50vh', display: 'flex', flexDirection: 'column', gap: '2rem', overflow: canScroll ? 'scroll' : 'hidden', overflowX: 'hidden' }}>
-          <div>{projects[projectIndex].title}</div>
-          <div style={{ alignSelf: 'center' }}>{projects[projectIndex].description}</div>
-        </div>
-      </div>
+      <CCard className="mb-3" style={{display: 'flex', alignItems: 'center', width: '80%', height: '100%', maxWidth: projects[projectIndex].verticalImg ? '40rem': '130rem'}}>
+        <CCardImage orientation="top" src={projects[projectIndex].imageUrl} style={{maxHeight: projects[projectIndex].verticalImg ? '70vh' : '', objectFit: 'contain'}} />
+        <CCardBody style={{overflow: 'scroll'}}>
+          <CCardTitle>{projects[projectIndex].title}</CCardTitle>
+          <CCardText style={{maxHeight: '30vh', overflow: 'scroll'}}>{projects[projectIndex].description}</CCardText>
+          <CCardText ><small className="text-medium-emphasis">Last updated 3 mins ago</small></CCardText>
+        </CCardBody>
+      </CCard>
       <span style={{ display: 'flex', alignItems: 'center', padding: '0.4rem' }} onClick={() => handleClick(1)}>{">"}</span>
     </div>
   );
@@ -304,15 +300,15 @@ const Portfolio = () => {
   const projectsRef = useRef(null);
   const experienceRef = useRef(null);
   const blogRef = useRef(null);
-  
-  
+
+
   const sections = [
     { title: 'About Me', ref: aboutRef, ContentComponent: AboutContent },
     { title: 'Projects', ref: projectsRef, ContentComponent: ProjectsContent },
     { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent },
     { title: 'Blog', ref: blogRef, ContentComponent: BlogContent },
   ];
-  const alternatingColors = ['#A3B7C0', '#3B4C5A']; 
+  const alternatingColors = ['#A3B7C0', '#3B4C5A'];
 
 
   // Function to handle smooth scrolling and hash update
@@ -325,7 +321,7 @@ const Portfolio = () => {
       });
     }
   };
-  
+
 
   // Effect to handle hash links (deep linking)
   useEffect(() => {
@@ -340,11 +336,11 @@ const Portfolio = () => {
     <div>
       <Header sections={sections} scrollToSection={scrollToSection} />
       {sections.map((section, index) => (
-        <Section 
+        <Section
           key={section.title}
-          id={section.title.toLowerCase().replace(/\s+/g, '-')} 
-          title={section.title} 
-          refProp={section.ref} 
+          id={section.title.toLowerCase().replace(/\s+/g, '-')}
+          title={section.title}
+          refProp={section.ref}
           backgroundColor={alternatingColors[index % 2]}
           nextBackgroundColor={index < sections.length - 1 ? alternatingColors[(index + 1) % 2] : alternatingColors[index % 2]}
         >
