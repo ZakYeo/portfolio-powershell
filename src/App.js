@@ -5,6 +5,9 @@ import national_trust_1 from './assets/national_trust_1.jpeg';
 import zogs_1 from './assets/ZOGS_1.png'
 import vscode_gpt_1 from './assets/vscode-gpt-1.png'
 import receipt_ranger_1 from './assets/receipt-ranger-1.jpeg'
+import zally_logo from './assets/zally-logo.jpeg';
+import macro4 from './assets/macro-4.png';
+import codeNinja from './assets/code-ninja.png'
 import './App.css';
 import { CCard, CCardImage, CCardBody, CCardTitle, CCardText, CRow, CCol, CCardFooter, CCarousel, CCarouselItem, CImage } from '@coreui/react';
 import '@coreui/coreui/dist/css/coreui.min.css'
@@ -227,11 +230,11 @@ const ProjectsContent = () => {
   }
 
   return (
-    <div style={{paddingTop: '10rem', paddingBottom: '10rem'}}>
+    <div style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
       <CRow xs={{ cols: 1, gutter: 5 }} md={{ cols: 2 }}>
         <CCol xs>
           <CCard style={cardStyle}>
-          {/*
+            {/*
           Carousel disabled for now
           <CCarousel controls indicators>
           <CCarouselItem>
@@ -241,7 +244,7 @@ const ProjectsContent = () => {
             <CImage className="d-block w-100" src={zogs_1} alt="slide 2" />
           </CCarouselItem>
           </CCarousel> */}
-          <CCardImage orientation="top" src={projects[0].imageUrl} style={imgStyle} />
+            <CCardImage orientation="top" src={projects[0].imageUrl} style={imgStyle} />
             <CCardBody>
               <CCardTitle>{projects[0].title}</CCardTitle>
               <CCardText>{projects[0].description}</CCardText>
@@ -264,8 +267,8 @@ const ProjectsContent = () => {
           </CCard>
         </CCol>
         <CCol xs>
-          <CCard style={cardStyle} > 
-            <CCardImage orientation="top" src={projects[2].imageUrl} style={imgStyle}  />
+          <CCard style={cardStyle} >
+            <CCardImage orientation="top" src={projects[2].imageUrl} style={imgStyle} />
             <CCardBody>
               <CCardTitle>{projects[2].title}</CCardTitle>
               <CCardText>{projects[2].description}</CCardText>
@@ -298,11 +301,68 @@ const ProjectsContent = () => {
 
 
 
-const ExperienceContent = () => (
-  <div>
-    Experience
+const ExperienceContent = () => {
+
+  const jobs = [
+    { title: 'Zally', imageUrl: zally_logo, description: "At Zally, I play a pivotal role in ushering in a password-free future by leveraging AI & software development technologies to continuously verify users by learning and assessing their unique behavioural biometrics. This innovative solution is composed of a front-end SDK, written to facilitate a seamless user interface and to capture behavioural biometrics, and a backend API to connect the SDK with our cloud server, bridging the experience."},
+    {title: "Macro 4", imageUrl: macro4, description: "In my second year at Bournemouth University, I joined Macro 4 as a placement student in software development. My role involved working with diverse teams and utilizing languages like Java, HTML, CSS, Assembler, and JavaScript on significant projects. I contributed notably to the Task Plan Editor, enhancing a digital process orchestration tool, and the InSync Web Application, which modified a Mainframe product for web integration. These experiences sharpened my technical skills, particularly in Mainframe technology, and its application in business."},
+    {title: "Code Ninja", imageUrl: codeNinja, description: "At Code Ninjas, I embraced the opportunity to foster the next generation of tech enthusiasts, teaching fundamental coding skills to children aged 5 to 16. Our curriculum, modelled on the martial arts belt system, introduced students to JavaScript at the white belt level, progressing up to Unity and C# at the black belt level."}
+  ];
+  
+  
+  return (
+  <div style={{ paddingTop: '10rem', paddingBottom: '10rem' }}>
+    <CRow xs={{ cols: 1, gutter: 4 }} md={{ cols: 1 }} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <CCol xs>
+        <CCard className="mb-3" >
+          <CRow className="g-0">
+            <CCol md={2} style={{justifyContent: 'center', alignContent: 'center', display: 'flex', minWidth: '13rem'}} >
+              <CCardImage src={jobs[0].imageUrl} />
+            </CCol>
+            <CCol>
+              <CCardBody>
+                <CCardTitle>{jobs[0].title}</CCardTitle>
+                <CCardText>{jobs[0].description}</CCardText>
+              </CCardBody>
+            </CCol>
+          </CRow>
+        </CCard>
+      </CCol>
+      <CCol xs>
+        <CCard className="mb-3" >
+          <CRow className="g-0">
+            <CCol md={2} style={{justifyContent: 'center', alignContent: 'center', display: 'flex', minWidth: '13rem'}}>
+              <CCardImage src={jobs[1].imageUrl} />
+            </CCol>
+            <CCol>
+              <CCardBody>
+                <CCardTitle>{jobs[1].title}</CCardTitle>
+                <CCardText>{jobs[1].description}</CCardText>
+              </CCardBody>
+            </CCol>
+          </CRow>
+        </CCard>
+      </CCol>
+      <CCol xs>
+        <CCard className="mb-3" >
+          <CRow className="g-0">
+            <CCol md={2} style={{justifyContent: 'center', alignContent: 'center', display: 'flex', minWidth: '13rem'}}>
+              <CCardImage src={jobs[2].imageUrl} />
+            </CCol>
+            <CCol>
+              <CCardBody>
+                <CCardTitle>{jobs[2].title}</CCardTitle>
+                <CCardText>{jobs[2].description}</CCardText>
+              </CCardBody>
+            </CCol>
+          </CRow>
+        </CCard>
+      </CCol>
+    </CRow>
   </div>
 );
+}
+
 
 const BlogContent = () => (
   <div style={{ height: '10vh' }}>
