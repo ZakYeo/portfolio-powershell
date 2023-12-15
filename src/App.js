@@ -303,12 +303,11 @@ const Portfolio = () => {
 
 
   const sections = [
-    { title: 'About Me', ref: aboutRef, ContentComponent: AboutContent },
-    { title: 'Projects', ref: projectsRef, ContentComponent: ProjectsContent },
-    { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent },
-    { title: 'Blog', ref: blogRef, ContentComponent: BlogContent },
+    { title: 'About Me', ref: aboutRef, ContentComponent: AboutContent, color: '#A3B7C0' }, 
+    { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent, color: '#3B4C5A' }, 
+    { title: 'Projects', ref: projectsRef, ContentComponent: ProjectsContent, color: '#3B4C5A' }, 
+    { title: 'Blog', ref: blogRef, ContentComponent: BlogContent, color: '#A3B7C0' }, 
   ];
-  const alternatingColors = ['#A3B7C0', '#3B4C5A'];
 
 
   // Function to handle smooth scrolling and hash update
@@ -335,18 +334,24 @@ const Portfolio = () => {
   return (
     <div>
       <Header sections={sections} scrollToSection={scrollToSection} />
-      {sections.map((section, index) => (
-        <Section
-          key={section.title}
-          id={section.title.toLowerCase().replace(/\s+/g, '-')}
-          title={section.title}
-          refProp={section.ref}
-          backgroundColor={alternatingColors[index % 2]}
-          nextBackgroundColor={index < sections.length - 1 ? alternatingColors[(index + 1) % 2] : alternatingColors[index % 2]}
-        >
-          <section.ContentComponent />
-        </Section>
-      ))}
+      {sections.map((section, index) => {
+        // Determine the current and next section's colors
+        const currentColor = section.color;
+        const nextSection = sections[index + 1];
+        const nextColor = nextSection ? nextSection.color : currentColor;
+
+        return (
+          <Section
+            key={section.title}
+            id={section.title.toLowerCase().replace(/\s+/g, '-')}
+            refProp={section.ref}
+            backgroundColor={currentColor}
+            nextBackgroundColor={nextColor}
+          >
+            <section.ContentComponent />
+          </Section>
+        );
+      })}
     </div>
   );
 }
