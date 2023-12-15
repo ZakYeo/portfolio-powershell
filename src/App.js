@@ -6,7 +6,7 @@ import zogs_1 from './assets/ZOGS_1.png'
 import vscode_gpt_1 from './assets/vscode-gpt-1.png'
 import receipt_ranger_1 from './assets/receipt-ranger-1.jpeg'
 import './App.css';
-import { CCard, CCardImage, CCardBody, CCardTitle, CCardText, CRow, CCol, CCardFooter } from '@coreui/react';
+import { CCard, CCardImage, CCardBody, CCardTitle, CCardText, CRow, CCol, CCardFooter, CCarousel, CCarouselItem, CImage } from '@coreui/react';
 import '@coreui/coreui/dist/css/coreui.min.css'
 function App() {
   return (
@@ -102,7 +102,7 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
 
   const style = {
     section: {
-      height: '100vh',
+      height: '100%',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -111,7 +111,9 @@ const Section = ({ id, children, refProp, backgroundColor, nextBackgroundColor }
       fontFamily: 'Roboto, sans-serif',
       backgroundColor: backgroundColor,
       color: textColor,
-      position: 'relative'
+      position: 'relative',
+      paddingLeft: '10%',
+      paddingRight: '10%'
     },
     sectionTitle: {
       fontSize: '2.5rem',
@@ -177,7 +179,7 @@ const AboutContent = () => {
   };
 
   return (
-    <div style={{ paddingTop: '60px' }}>
+    <div style={{ paddingTop: '60px', height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <h2 style={{ fontSize: '2.5rem' }}>Hey! 👋</h2>
       <h2>I'm Zak Yeomanson.</h2>
       <div>
@@ -208,69 +210,84 @@ const AboutContent = () => {
 
 const ProjectsContent = () => {
 
-  const [flexDirection, setFlexDirection] = useState("")
-  const [projectIndex, setProjectIndex] = useState(0);
-  const [canScroll, setCanScroll] = useState(false);
-  const contentRef = useRef(null);
 
   const projects = [
-    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1, verticalImg: true },
     { title: "VSCode GPT", description: "Visual Studio Code extension designed to improve & optimise workflow by allowing to chat with OpenAI's ChatGPT directly from your editor. You can use it to generate code or comments on the fly, or simply have conversations with it that are saved and persist in storage.", imageUrl: vscode_gpt_1 },
-    { title: "Zak's Online Gaming Store", description: "Built using Python's Flask library for the backend and HTML, CSS & JavaScript for the frontend. ZOGS interfaces with either a MongoDB or Firebase Realtime Database to fetch and dynamically display a list of games on the webpage. The information pertaining to each game is modifiable by administrators who are granted permissions in the database. In addition to editing game information, administrators have the ability to add or remove games, and to view the website's 'logs'. ZOGS Gaming Store also interacts with two APIs: The Cloudinary API: Handles the saving of images in the database. The Steam API: Allows the viewing of the top achievements for the selected game.", imageUrl: zogs_1 },
+    { title: "Zak's Online Gaming Store", description: "ZOGS interfaces with either a MongoDB or Firebase Realtime Database to fetch and dynamically display a list of games on the webpage. The information pertaining to each game is modifiable by administrators who are granted permissions in the database. Administrators have the ability to add or remove games, and to view the website's 'logs'.", imageUrl: zogs_1 },
+    { title: "National Trust Re-Design", description: "A prototype built with a refined touch to enhance user interaction and overall experience with the National Trust.", imageUrl: national_trust_1, verticalImg: true },
     { title: "Receipt Tracking App", description: "A mobile application written using React Native with expo-go. This prototype app functions as an expense tracker and uses optical character recognition (OCR) to save your expenses to a database.", imageUrl: receipt_ranger_1, verticalImg: true },
   ];
 
-  const handleClick = (direction) => {
-    let newIndex = projectIndex + direction;
-
-
-    if (newIndex < 0) {
-      // Out of range, loop
-      newIndex = projects.length - 1;
-    } else if (newIndex >= projects.length) {
-      // Out of range, loop
-      newIndex = 0;
-    }
-
-    // Set flex direction based on project
-    if (projects[newIndex].title === "VSCode GPT" ||
-      projects[newIndex].title === "Zak's Online Gaming Store"
-    ) {
-      setFlexDirection('column');
-    } else {
-      setFlexDirection("")
-    }
-
-    setProjectIndex(newIndex);
-
+  const imgStyle = {
+    objectFit: 'contain',
+    maxHeight: '50rem'
+  };
+  const cardStyle = {
+    maxWidth: '85rem'
   }
 
-  useEffect(() => {
-    const checkScroll = () => {
-      const element = contentRef.current;
-      if (element) {
-        // Check if the content height is greater than the container height
-        setCanScroll(element.scrollHeight > element.clientHeight);
-      }
-    };
-    checkScroll();
-    window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
-  }, [projectIndex]);
-
-
   return (
-    <div style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-      <span style={{ display: 'flex', alignItems: 'center', padding: '0.4rem' }} onClick={() => handleClick(-1)}>{"<"}</span>
-      <CCard className="mb-3" style={{display: 'flex', alignItems: 'center', width: '80%', height: '100%', maxWidth: projects[projectIndex].verticalImg ? '40rem': '130rem'}}>
-        <CCardImage orientation="top" src={projects[projectIndex].imageUrl} style={{maxHeight: projects[projectIndex].verticalImg ? '70vh' : '', objectFit: 'contain'}} />
-        <CCardBody style={{overflow: 'scroll'}}>
-          <CCardTitle>{projects[projectIndex].title}</CCardTitle>
-          <CCardText style={{maxHeight: '30vh', overflow: 'scroll'}}>{projects[projectIndex].description}</CCardText>
-          <CCardText ><small className="text-medium-emphasis">Last updated 3 mins ago</small></CCardText>
-        </CCardBody>
-      </CCard>
-      <span style={{ display: 'flex', alignItems: 'center', padding: '0.4rem' }} onClick={() => handleClick(1)}>{">"}</span>
+    <div style={{paddingTop: '10rem', paddingBottom: '10rem'}}>
+      <CRow xs={{ cols: 1, gutter: 5 }} md={{ cols: 2 }}>
+        <CCol xs>
+          <CCard style={cardStyle}>
+          {/*
+          Carousel disabled for now
+          <CCarousel controls indicators>
+          <CCarouselItem>
+            <CImage className="d-block w-100" src={projects[0].imageUrl} alt="slide 1" />
+          </CCarouselItem>
+          <CCarouselItem>
+            <CImage className="d-block w-100" src={zogs_1} alt="slide 2" />
+          </CCarouselItem>
+          </CCarousel> */}
+          <CCardImage orientation="top" src={projects[0].imageUrl} style={imgStyle} />
+            <CCardBody>
+              <CCardTitle>{projects[0].title}</CCardTitle>
+              <CCardText>{projects[0].description}</CCardText>
+            </CCardBody>
+            <CCardFooter>
+              <small className="text-medium-emphasis">Footer</small>
+            </CCardFooter>
+          </CCard>
+        </CCol>
+        <CCol xs>
+          <CCard style={cardStyle} >
+            <CCardImage orientation="top" src={projects[1].imageUrl} style={imgStyle} />
+            <CCardBody>
+              <CCardTitle>{projects[1].title}</CCardTitle>
+              <CCardText>{projects[1].description}</CCardText>
+            </CCardBody>
+            <CCardFooter>
+              <small className="text-medium-emphasis">Footer</small>
+            </CCardFooter>
+          </CCard>
+        </CCol>
+        <CCol xs>
+          <CCard style={cardStyle} > 
+            <CCardImage orientation="top" src={projects[2].imageUrl} style={imgStyle}  />
+            <CCardBody>
+              <CCardTitle>{projects[2].title}</CCardTitle>
+              <CCardText>{projects[2].description}</CCardText>
+            </CCardBody>
+            <CCardFooter>
+              <small className="text-medium-emphasis">Footer</small>
+            </CCardFooter>
+          </CCard>
+        </CCol>
+        <CCol xs>
+          <CCard style={cardStyle} >
+            <CCardImage orientation="top" src={projects[3].imageUrl} style={imgStyle} />
+            <CCardBody>
+              <CCardTitle>{projects[3].title}</CCardTitle>
+              <CCardText>{projects[3].description}</CCardText>
+            </CCardBody>
+            <CCardFooter>
+              <small className="text-medium-emphasis">Footer</small>
+            </CCardFooter>
+          </CCard>
+        </CCol>
+      </CRow>
     </div>
   );
 };
@@ -283,12 +300,12 @@ const ProjectsContent = () => {
 
 const ExperienceContent = () => (
   <div>
-    <p>Experience</p>
+    Experience
   </div>
 );
 
 const BlogContent = () => (
-  <div>
+  <div style={{ height: '10vh' }}>
     <p>Blog</p>
   </div>
 );
@@ -303,10 +320,10 @@ const Portfolio = () => {
 
 
   const sections = [
-    { title: 'About Me', ref: aboutRef, ContentComponent: AboutContent, color: '#A3B7C0' }, 
-    { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent, color: '#3B4C5A' }, 
-    { title: 'Projects', ref: projectsRef, ContentComponent: ProjectsContent, color: '#3B4C5A' }, 
-    { title: 'Blog', ref: blogRef, ContentComponent: BlogContent, color: '#A3B7C0' }, 
+    { title: 'About Me', ref: aboutRef, ContentComponent: AboutContent, color: '#A3B7C0' },
+    { title: 'Projects', ref: projectsRef, ContentComponent: ProjectsContent, color: '#3B4C5A' },
+    { title: 'Experience', ref: experienceRef, ContentComponent: ExperienceContent, color: '#3B4C5A' },
+    { title: 'Blog', ref: blogRef, ContentComponent: BlogContent, color: '#A3B7C0' },
   ];
 
 
