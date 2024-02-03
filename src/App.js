@@ -5,6 +5,14 @@ import './App.css';
 const styles = {
   titleText: {
     paddingBottom: '1rem',
+  },
+  input: {
+    border: 'none',
+    outline: 'none',
+    background: 'transparent',
+    color: 'white',
+    fontSize: '1rem',
+    fontFamily: 'Cascadia Code'
   }
 
 }
@@ -24,7 +32,11 @@ function App() {
         <div>Portfolio PowerShell</div>
         <div>Copyright (C) Zak Yeomanson. All rights reserved.</div>
       </div>
-      <div>{URL}&gt; </div>
+      <div>{URL}&gt; 
+        <span>
+          <input type="text" style={styles.input}></input>
+        </span>
+      </div>
     </div>
   );
 }
