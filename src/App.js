@@ -3,6 +3,9 @@ import './App.css';
 
 
 const styles = {
+  titleText: {
+    paddingBottom: '1rem',
+  }
 
 }
 
@@ -16,8 +19,8 @@ function App() {
   const URL = document.location.href;
 
   return (
-    <div>
-      <div >
+    <div style={{fontSize: '1rem'}}>
+      <div style={styles.titleText}>
         <div>Portfolio PowerShell</div>
         <div>Copyright (C) Zak Yeomanson. All rights reserved.</div>
       </div>
