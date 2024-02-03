@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './App.css';
 
 
@@ -18,10 +18,21 @@ const styles = {
 }
 
 function App() {
+  
+  const inputRef = useRef(null);
+
 
   useEffect(() => {
     styleBody();
-    return () => resetBodyStyle();
+    inputRef.current.focus();
+
+    const handleFocus = () => inputRef.current.focus();
+    document.addEventListener('click', handleFocus);
+
+    return () => {
+      resetBodyStyle();
+      document.removeEventListener('click', handleFocus);
+    }
   }, []);
 
   const URL = document.location.href;
@@ -34,7 +45,7 @@ function App() {
       </div>
       <div>{URL}&gt; 
         <span>
-          <input type="text" style={styles.input}></input>
+          <input type="text" style={styles.input} ref={inputRef}></input>
         </span>
       </div>
     </div>
