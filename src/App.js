@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
+import PowershellTitle from './components/PowershellTitle';
 
 const styles = {
-  titleText: {
-    paddingBottom: '1rem',
-  },
   inputWrapper: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -87,7 +85,15 @@ function App() {
       updateCaretPosition();
     };
   
-    const handleKeydown = () => {
+    const handleKeydown = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault(); 
+        const previousCommands = document.getElementById('previousCommands');
+        previousCommands.innerHTML += `${window.location.href}&gt;${editableRef.current.textContent}<br>`;
+        console.log("Command to process:", editableRef.current.textContent);
+        editableRef.current.textContent = '';
+      }
+
       // Update caret on next tick to ensure the key event has processed
       setTimeout(updateCaretPosition, 0);
     };
@@ -149,10 +155,8 @@ function App() {
   return (
     <div style={{ fontSize: '1rem' }}>
       <style>{globalStyles}</style>
-      <div style={styles.titleText}>
-        <div>Portfolio PowerShell</div>
-        <div>Copyright (C) Zak Yeomanson. All rights reserved.</div>
-      </div>
+      <PowershellTitle />
+      <span id="previousCommands"></span>
       <div>
         {URL}&gt;
         <span style={styles.inputWrapper}>
