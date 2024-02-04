@@ -131,24 +131,27 @@ function App() {
         restoreSelection();
       }
     };
+
+    const eventHandlers = [
+      { target: editableRef.current, type: 'focus', handler: restoreSelection },
+      { target: editableRef.current, type: 'blur', handler: saveSelection },
+      { target: document, type: 'click', handler: handleDocumentClick },
+      { target: editableRef.current, type: 'input', handler: handleInput },
+      { target: editableRef.current, type: 'keydown', handler: handleKeydown },
+      { target: editableRef.current, type: 'click', handler: handleClick },
+      { target: editableRef.current, type: 'mouseup', handler: handleClick }, // For mouse drag selections
+    ];
     
-    editableRef.current.addEventListener('focus', restoreSelection);
-    editableRef.current.addEventListener('blur', saveSelection);
-    document.addEventListener('click', handleDocumentClick);
-    editableRef.current.addEventListener('input', handleInput);
-    editableRef.current.addEventListener('keydown', handleKeydown);
-    editableRef.current.addEventListener('click', handleClick);
-    editableRef.current.addEventListener('mouseup', handleClick); // For mouse drag selections
+    eventHandlers.forEach(({ target, type, handler }) => {
+      target.addEventListener(type, handler);
+    });
   
     return () => {
       resetBodyStyle();
       document.removeEventListener('click', handleDocumentClick);
-      editableRef.current.removeEventListener('focus', restoreSelection);
-      editableRef.current.removeEventListener('blur', saveSelection);
-      editableRef.current && editableRef.current.removeEventListener('input', handleInput);
-      editableRef.current && editableRef.current.removeEventListener('keydown', handleKeydown);
-      editableRef.current && editableRef.current.removeEventListener('click', handleClick);
-      editableRef.current && editableRef.current.removeEventListener('mouseup', handleClick);
+      eventHandlers.forEach(({ target, type, handler }) => {
+        target && target.removeEventListener(type, handler);
+      });
     }
   }, []);
 
