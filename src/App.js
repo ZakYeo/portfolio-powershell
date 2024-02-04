@@ -7,6 +7,8 @@ const styles = {
     display: 'inline-flex',
     alignItems: 'center',
     position: 'relative',
+    maxWidth: '100vw',
+    overflowX: 'hidden'
   },
   input: {
     border: 'none',
@@ -18,6 +20,9 @@ const styles = {
     padding: '0.2rem',
     minWidth: '200px',
     caretColor: 'transparent',
+    width: '100%',
+    whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word',
   },
   caret: {
     display: 'inline-block',
@@ -46,7 +51,7 @@ const globalStyles = `
 function App() {
   const editableRef = useRef(null);
   const hiddenTextRef = useRef(null);
-  const [caretLeft, setCaretLeft] = useState(0);
+  const [caretPosition, setCaretPosition] = useState({ left: 0, top: 0 });
   let lastSelectionRange = null;
 
   const saveSelection = () => {
@@ -74,11 +79,23 @@ function App() {
         const range = selection.getRangeAt(0);
         const dummy = document.createElement("span");
         range.insertNode(dummy);
-        setCaretLeft(dummy.offsetLeft);
+        const rect = dummy.getBoundingClientRect(); // Using getBoundingClientRect for more accurate position
+        const containerRect = editableRef.current.getBoundingClientRect(); // Get container's rect to calculate relative position
+        setCaretPosition({
+          left: dummy.offsetLeft,
+          top: rect.top - containerRect.top + editableRef.current.scrollTop // Calculate top position relative to the editable container
+        });
         dummy.parentNode.removeChild(dummy);
+      }else if (editableRef.current) {
+        // Set initial caret position based on editable element's metrics
+        setCaretPosition({
+          left: 0,
+          top: (editableRef.current.scrollHeight > editableRef.current.clientHeight) ? editableRef.current.scrollHeight : 0
+        });
       }
     };
-  
+    
+    updateCaretPosition();
     const handleInput = () => {
       // Copy the text content to the hidden span
       hiddenTextRef.current.textContent = editableRef.current.textContent;
@@ -173,7 +190,8 @@ function App() {
           <span
             style={{
               ...styles.caret,
-              left: caretLeft,
+              left: caretPosition.left, // Used to calculate the caret position (horizontally)
+              top: caretPosition.top // Used to calculate the caret position (vertically)
             }}
           ></span> {/* This span acts as the blinking caret */}
         </span>
