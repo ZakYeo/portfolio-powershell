@@ -8,7 +8,6 @@ const styles = {
     alignItems: 'center',
     position: 'relative',
     maxWidth: '100vw',
-    overflowX: 'hidden'
   },
   input: {
     border: 'none',
@@ -72,7 +71,7 @@ function App() {
   useEffect(() => {
     styleBody();
     editableRef.current.focus();
-  
+
     const updateCaretPosition = () => {
       const selection = window.getSelection();
       if (selection.rangeCount > 0 && editableRef.current.contains(selection.anchorNode)) {
@@ -86,7 +85,7 @@ function App() {
           top: rect.top - containerRect.top + editableRef.current.scrollTop // Calculate top position relative to the editable container
         });
         dummy.parentNode.removeChild(dummy);
-      }else if (editableRef.current) {
+      } else if (editableRef.current) {
         // Set initial caret position based on editable element's metrics
         setCaretPosition({
           left: 0,
@@ -94,17 +93,17 @@ function App() {
         });
       }
     };
-    
+
     updateCaretPosition();
     const handleInput = () => {
       // Copy the text content to the hidden span
       hiddenTextRef.current.textContent = editableRef.current.textContent;
       updateCaretPosition();
     };
-  
+
     const handleKeydown = (e) => {
       if (e.key === 'Enter') {
-        e.preventDefault(); 
+        e.preventDefault();
         const previousCommands = document.getElementById('previousCommands');
         previousCommands.innerHTML += `${window.location.href}&gt;${editableRef.current.textContent}<br>`;
         console.log("Command to process:", editableRef.current.textContent);
@@ -114,13 +113,13 @@ function App() {
       // Update caret on next tick to ensure the key event has processed
       setTimeout(updateCaretPosition, 0);
     };
-  
+
     const handleClick = (e) => {
       // Check if the click is inside the editableRef
       if (editableRef.current.contains(e.target)) {
         // Update caret on next tick to capture the new cursor position after the click
         setTimeout(updateCaretPosition, 0);
-      } else{
+      } else {
         restoreSelection();
       }
     };
@@ -141,11 +140,11 @@ function App() {
       { target: editableRef.current, type: 'click', handler: handleClick },
       { target: editableRef.current, type: 'mouseup', handler: handleClick }, // For mouse drag selections
     ];
-    
+
     eventHandlers.forEach(({ target, type, handler }) => {
       target.addEventListener(type, handler);
     });
-  
+
     return () => {
       resetBodyStyle();
       document.removeEventListener('click', handleDocumentClick);
@@ -157,7 +156,7 @@ function App() {
 
   const resetBodyStyle = () => {
     document.documentElement.style.height = null;
-    document.body.style.margin = null;    
+    document.body.style.margin = null;
     document.body.style.height = null;
     document.body.style.backgroundColor = null;
   }
