@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import PowershellTitle from './components/PowershellTitle';
-
+import { registerCommand, executeCommand } from './util/commands';
+import { HELP_CMD_OUTPUT } from './variables';
 const styles = {
   inputWrapper: {
     display: 'inline-flex',
@@ -69,6 +70,7 @@ function App() {
   };
 
   useEffect(() => {
+    registerCommand('help', () => HELP_CMD_OUTPUT);
     styleBody();
     editableRef.current.focus();
 
@@ -104,9 +106,11 @@ function App() {
     const handleKeydown = (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
+        const inputText = editableRef.current.textContent.trim();
+        const [command, ...args] = inputText.split(' '); // Split input into command and arguments
+        const output = executeCommand(command, args); // Execute the command
         const previousCommands = document.getElementById('previousCommands');
-        previousCommands.innerHTML += `${window.location.href}&gt;${editableRef.current.textContent}<br>`;
-        console.log("Command to process:", editableRef.current.textContent);
+        previousCommands.innerHTML += `${window.location.href}&gt;${inputText}<br>${output}<br>`;
         editableRef.current.textContent = '';
       }
 
