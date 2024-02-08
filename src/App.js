@@ -3,50 +3,8 @@ import './App.css';
 import PowershellTitle from './components/PowershellTitle';
 import { registerCommand, executeCommand } from './util/commands';
 import { HELP_CMD_OUTPUT } from './variables';
-const styles = {
-  inputWrapper: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    position: 'relative',
-    maxWidth: '100vw',
-  },
-  input: {
-    border: 'none',
-    outline: 'none',
-    background: 'transparent',
-    color: 'white',
-    fontSize: '1rem',
-    fontFamily: 'Cascadia Code',
-    padding: '0.2rem',
-    minWidth: '200px',
-    caretColor: 'transparent',
-    width: '100%',
-    whiteSpace: 'pre-wrap',
-    wordWrap: 'break-word',
-  },
-  caret: {
-    display: 'inline-block',
-    width: '0.6em',
-    height: '1rem',
-    backgroundColor: 'white',
-    position: 'absolute',
-    animation: 'blink 1s step-start infinite',
-  },
-  hiddenText: {
-    visibility: 'hidden',
-    whiteSpace: 'pre',
-    position: 'absolute',
-    pointerEvents: 'none',
-  }
-}
 
-const globalStyles = `
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-`;
+
 
 function App() {
   const editableRef = useRef(null);
@@ -134,7 +92,6 @@ function App() {
         restoreSelection();
       }
     };
-
     const eventHandlers = [
       { target: editableRef.current, type: 'focus', handler: restoreSelection },
       { target: editableRef.current, type: 'blur', handler: saveSelection },
@@ -176,26 +133,25 @@ function App() {
   const URL = document.location.href;
 
   return (
-    <div style={{ fontSize: '1rem' }}>
-      <style>{globalStyles}</style>
+    <div className="appContainer">
       <PowershellTitle />
       <span id="previousCommands"></span>
       <div>
         {URL}&gt;
-        <span style={styles.inputWrapper}>
+        <span className="inputWrapper">
           <span
             contentEditable
-            style={styles.input}
+            className="input"
             ref={editableRef}
             suppressContentEditableWarning={true}
           ></span>
           <span
             ref={hiddenTextRef}
-            style={styles.hiddenText}
+            className="hiddenText"
           ></span>
           <span
+            className="caret"
             style={{
-              ...styles.caret,
               left: caretPosition.left, // Used to calculate the caret position (horizontally)
               top: caretPosition.top // Used to calculate the caret position (vertically)
             }}
