@@ -11,6 +11,7 @@ const TerminalInput = () => {
   const [url, setUrl] = useState(window.location.href);
   const [caretPosition, setCaretPosition] = useState({ left: 0, top: 0 });
   let lastSelectionRange = useRef(null);
+  const [commandOutputs, setCommandOutputs] = useState([]);
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -93,14 +94,14 @@ const TerminalInput = () => {
       if (e.key === "Enter") {
         e.preventDefault();
         const inputText = editableRef.current.textContent.trim();
-        const [command, ...args] = inputText.split(" "); // Split input into command and arguments
-        const output = executeCommand(command, args); // Execute the command
-        const previousCommands = document.getElementById("previousCommands");
-        previousCommands.innerHTML += `${window.location.href}&gt;${inputText}<br>${output}<br>`;
+        const [command, ...args] = inputText.split(" ");
+        const outputComponent = executeCommand(command, { args });
+        setCommandOutputs((prevOutputs) => [
+          ...prevOutputs,
+          { commandText: inputText, output: outputComponent },
+        ]);
         editableRef.current.textContent = "";
       }
-
-      // Update caret on next tick to ensure the key event has processed
       setTimeout(updateCaretPosition, 0);
     };
 
@@ -151,26 +152,39 @@ const TerminalInput = () => {
   }, []);
 
   return (
-    <div>
-      {url}&gt;
-      <span className="inputWrapper">
-        <span
-          contentEditable
-          className="input"
-          ref={editableRef}
-          suppressContentEditableWarning={true}
-        ></span>
-        <span ref={hiddenTextRef} className="hiddenText"></span>
-        <span
-          className="caret"
-          style={{
-            left: caretPosition.left, // Used to calculate the caret position (horizontally)
-            top: caretPosition.top, // Used to calculate the caret position (vertically)
-          }}
-        ></span>{" "}
-        {/* This span acts as the blinking caret */}
-      </span>
-    </div>
+    <>
+      <div id="commandOutputs">
+        {commandOutputs.map(({ commandText, output }, index) => (
+          <div key={index}>
+            {url}&gt;
+            <span className="commandOutputContainer inputWrapper">
+              {commandText}
+            </span>
+            <div>{output}</div>
+          </div>
+        ))}
+      </div>
+      <div>
+        {url}&gt;
+        <span className="inputWrapper">
+          <span
+            contentEditable
+            className="input"
+            ref={editableRef}
+            suppressContentEditableWarning={true}
+          ></span>
+          <span ref={hiddenTextRef} className="hiddenText"></span>
+          <span
+            className="caret"
+            style={{
+              left: caretPosition.left, // Used to calculate the caret position (horizontally)
+              top: caretPosition.top, // Used to calculate the caret position (vertically)
+            }}
+          ></span>{" "}
+          {/* This span acts as the blinking caret */}
+        </span>
+      </div>
+    </>
   );
 };
 
