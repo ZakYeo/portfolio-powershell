@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import PowershellTitle from "./components/PowershellTitle";
-import { registerCommand } from "./util/commands";
+import { registerCommand } from "./util/handleCommands";
 import { HELP_CMD_OUTPUT } from "./variables";
 import TerminalInput from "./components/TerminalInput";
 import { styleBody, resetBodyStyle } from "./util/bodyStyle";

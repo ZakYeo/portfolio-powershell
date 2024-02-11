@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { executeCommand } from "../util/commands";
+import { executeCommand } from "../util/handleCommands";
 import "../App.css";
 
 /**
