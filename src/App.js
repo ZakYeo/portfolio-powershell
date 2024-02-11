@@ -5,10 +5,12 @@ import { registerCommand } from "./util/handleCommands";
 import TerminalInput from "./components/TerminalInput";
 import { styleBody, resetBodyStyle } from "./util/handleBodyStyle";
 import Help from "./commands/Help";
+import ChangeDirectory from "./commands/ChangeDirectory";
 
 function App() {
   useEffect(() => {
-    registerCommand("help", () => <Help />);
+    registerCommand("help", Help);
+    registerCommand("cd", ChangeDirectory);
     styleBody();
 
     return () => {
