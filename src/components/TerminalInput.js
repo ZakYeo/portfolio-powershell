@@ -14,6 +14,28 @@ const TerminalInput = () => {
   const [commandOutputs, setCommandOutputs] = useState([]);
 
   useEffect(() => {
+    // Debugging: Log the content of local storage before attempting to load
+    console.log(
+      "Loading commands from local storage:",
+      localStorage.getItem("commandOutputs")
+    );
+
+    const storedCommands = JSON.parse(localStorage.getItem("commandOutputs"));
+    if (storedCommands) {
+      console.log("Found stored commands:", storedCommands);
+      setCommandOutputs(storedCommands);
+    } else {
+      console.log("No stored commands found.");
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("Detected change in commandOutputs, saving to local storage.");
+    // Save command outputs to local storage whenever they change
+    localStorage.setItem("commandOutputs", JSON.stringify(commandOutputs));
+  }, [commandOutputs]);
+
+  useEffect(() => {
     setUrl(window.location.href);
     editableRef.current.focus();
 
@@ -160,7 +182,7 @@ const TerminalInput = () => {
             <span className="commandOutputContainer inputWrapper">
               {commandText}
             </span>
-            <div>{output}</div>
+            <div>{React.isValidElement(output) ? output : null}</div>
           </div>
         ))}
       </div>
