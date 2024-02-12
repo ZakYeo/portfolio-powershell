@@ -6,17 +6,22 @@ import TerminalInput from "./components/TerminalInput";
 import { styleBody, resetBodyStyle } from "./util/handleBodyStyle";
 import Help from "./commands/Help";
 import ChangeDirectory from "./commands/ChangeDirectory";
+import Projects from "./commands/Projects";
 
 function App() {
   useEffect(() => {
     registerCommand("help", Help);
     registerCommand("cd", ChangeDirectory);
+    registerCommand("projects", Projects);
     styleBody();
+
 
     return () => {
       resetBodyStyle();
     };
   }, []);
+
+
 
   return (
     <div className="appContainer">
