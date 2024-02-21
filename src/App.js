@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import PowershellTitle from "./components/PowershellTitle";
 import { registerCommand } from "./util/handleCommands";
@@ -9,6 +9,10 @@ import ChangeDirectory from "./commands/ChangeDirectory";
 import Projects from "./commands/Projects";
 
 function App() {
+
+  const [firstTimeLoadingPage, setFirstTimeLoadingPage] = useState(true);
+  const [typingFinished, setTypingFinished] = useState(false);
+
   useEffect(() => {
     registerCommand("help", Help);
     registerCommand("cd", ChangeDirectory);
@@ -25,9 +29,9 @@ function App() {
 
   return (
     <div className="appContainer">
-      <PowershellTitle />
+      <PowershellTitle onTypingFinished={() => setTypingFinished(true)} />
       <span id="previousCommands"></span>
-      <TerminalInput />
+      {typingFinished ? <TerminalInput /> : <></>}
     </div>
   );
 }

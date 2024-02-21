@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 
-const PowershellTitle = () => {
+const PowershellTitle = ({ onTypingFinished }) => {
   const lines = [
     "Portfolio PowerShell",
     "Copyright (C) Zak Yeomanson. All rights reserved.",
@@ -27,10 +27,13 @@ const PowershellTitle = () => {
           ]);
 
           if (charIndex < line.length) {
-            setTimeout(typeChar, 100); // Adjust typing speed
+            setTimeout(typeChar, 100);
           } else if (lineIndex < lines.length - 1) {
             // Move to the next line after a short delay
-            setTimeout(() => typeLine(lineIndex + 1), 500); // Adjust delay between lines
+            setTimeout(() => typeLine(lineIndex + 1), 500);
+          } else {
+            // All lines are typed, call the callback function
+            onTypingFinished();
           }
         };
 
