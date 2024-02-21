@@ -7,7 +7,8 @@ import { styleBody, resetBodyStyle } from "./util/handleBodyStyle";
 import Help from "./commands/Help";
 import ChangeDirectory from "./commands/ChangeDirectory";
 import Projects from "./commands/Projects";
-
+import { FloatButton } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons';
 function App() {
 
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -40,10 +41,13 @@ function App() {
 
 
   return (
-    <div className="appContainer">
-      {loading ? <></> : <PowershellTitle onTypingFinished={() => setTypingFinished(true)} shouldAnimate={shouldAnimate} />}
-      {typingFinished && <TerminalInput />}
-    </div>
+    <>
+      <div className="appContainer">
+        {loading ? <></> : <PowershellTitle onTypingFinished={() => setTypingFinished(true)} shouldAnimate={shouldAnimate} />}
+        {typingFinished && <TerminalInput />}
+      </div >
+      <FloatButton icon={<QuestionCircleOutlined />} />
+    </>
   );
 }
 
