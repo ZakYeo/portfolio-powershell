@@ -10,28 +10,39 @@ import Projects from "./commands/Projects";
 
 function App() {
 
-  const [firstTimeLoadingPage, setFirstTimeLoadingPage] = useState(true);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
   const [typingFinished, setTypingFinished] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const checkVisit = async () => {
+      const hasVisited = localStorage.getItem("hasVisited");
+      console.log("has visited: ", hasVisited);
+      if (!hasVisited) {
+        setShouldAnimate(true); // Animate only if it's the user's first visit
+        localStorage.setItem("hasVisited", "true");
+      }
+    };
+
+    checkVisit();
+
     registerCommand("help", Help);
     registerCommand("cd", ChangeDirectory);
     registerCommand("projects", Projects);
     styleBody();
 
+    setLoading(false);
 
-    return () => {
-      resetBodyStyle();
-    };
+
+    return () => resetBodyStyle();
   }, []);
 
 
 
   return (
     <div className="appContainer">
-      <PowershellTitle onTypingFinished={() => setTypingFinished(true)} />
-      <span id="previousCommands"></span>
-      {typingFinished ? <TerminalInput /> : <></>}
+      {loading ? <></> : <PowershellTitle onTypingFinished={() => setTypingFinished(true)} shouldAnimate={shouldAnimate} />}
+      {typingFinished && <TerminalInput />}
     </div>
   );
 }
