@@ -7,13 +7,14 @@ import { styleBody, resetBodyStyle } from "./util/handleBodyStyle";
 import Help from "./commands/Help";
 import ChangeDirectory from "./commands/ChangeDirectory";
 import Projects from "./commands/Projects";
-import { FloatButton } from 'antd'
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import HelpButtonAndModal from "./components/HelpButtonAndModal";
+
 function App() {
 
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [typingFinished, setTypingFinished] = useState(false);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const checkVisit = async () => {
@@ -46,7 +47,7 @@ function App() {
         {loading ? <></> : <PowershellTitle onTypingFinished={() => setTypingFinished(true)} shouldAnimate={shouldAnimate} />}
         {typingFinished && <TerminalInput />}
       </div >
-      <FloatButton icon={<QuestionCircleOutlined />} />
+      <HelpButtonAndModal />
     </>
   );
 }
