@@ -11,6 +11,7 @@ const HelpButtonAndModal = () => {
                 title="What Is This And Where Am I?"
                 open={helpModal}
                 onOk={() => setHelpModalOpen(false)}
+                onCancel={() => setHelpModalOpen(false)}
                 wrapClassName="custom-modal"
                 centered
                 footer={[
