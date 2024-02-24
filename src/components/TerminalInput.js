@@ -5,13 +5,44 @@ import "../App.css";
 /**
  * A terminal-style input component with a block caret that allows users to enter and execute commands.
  */
-const TerminalInput = () => {
+const TerminalInput = ({ executeHelpCommand, setExecuteHelpCommand }) => {
   const editableRef = useRef(null);
   const hiddenTextRef = useRef(null);
   const [url, setUrl] = useState(window.location.href);
   const [caretPosition, setCaretPosition] = useState({ left: 0, top: 0 });
   let lastSelectionRange = useRef(null);
   const [commandOutputs, setCommandOutputs] = useState([]);
+
+  /**
+     * Updates the caret position based on the current selection within the editable area.
+     */
+  const updateCaretPosition = () => {
+    const selection = window.getSelection();
+    if (
+      selection.rangeCount > 0 &&
+      editableRef.current.contains(selection.anchorNode)
+    ) {
+      const range = selection.getRangeAt(0);
+      const dummy = document.createElement("span");
+      range.insertNode(dummy);
+      const rect = dummy.getBoundingClientRect(); // Using getBoundingClientRect for more accurate position
+      const containerRect = editableRef.current.getBoundingClientRect(); // Get container's rect to calculate relative position
+      setCaretPosition({
+        left: dummy.offsetLeft,
+        top: rect.top - containerRect.top + editableRef.current.scrollTop, // Calculate top position relative to the editable container
+      });
+      dummy.parentNode.removeChild(dummy);
+    } else if (editableRef.current) {
+      // Set initial caret position based on editable element's metrics
+      setCaretPosition({
+        left: 0,
+        top:
+          editableRef.current.scrollHeight > editableRef.current.clientHeight
+            ? editableRef.current.scrollHeight
+            : 0,
+      });
+    }
+  };
 
   useEffect(() => {
     // Debugging: Log the content of local storage before attempting to load
@@ -66,36 +97,7 @@ const TerminalInput = () => {
       }
     };
 
-    /**
-     * Updates the caret position based on the current selection within the editable area.
-     */
-    const updateCaretPosition = () => {
-      const selection = window.getSelection();
-      if (
-        selection.rangeCount > 0 &&
-        editableRef.current.contains(selection.anchorNode)
-      ) {
-        const range = selection.getRangeAt(0);
-        const dummy = document.createElement("span");
-        range.insertNode(dummy);
-        const rect = dummy.getBoundingClientRect(); // Using getBoundingClientRect for more accurate position
-        const containerRect = editableRef.current.getBoundingClientRect(); // Get container's rect to calculate relative position
-        setCaretPosition({
-          left: dummy.offsetLeft,
-          top: rect.top - containerRect.top + editableRef.current.scrollTop, // Calculate top position relative to the editable container
-        });
-        dummy.parentNode.removeChild(dummy);
-      } else if (editableRef.current) {
-        // Set initial caret position based on editable element's metrics
-        setCaretPosition({
-          left: 0,
-          top:
-            editableRef.current.scrollHeight > editableRef.current.clientHeight
-              ? editableRef.current.scrollHeight
-              : 0,
-        });
-      }
-    };
+
 
     updateCaretPosition();
 
@@ -172,6 +174,25 @@ const TerminalInput = () => {
       });
     };
   }, []);
+
+  useEffect(() => {
+    if (executeHelpCommand) {
+      editableRef.current.textContent = "";
+      const outputComponent = executeCommand("help", {});
+      setCommandOutputs((prevOutputs) => [
+        ...prevOutputs,
+        { commandText: "help", output: outputComponent },
+      ]);
+      setExecuteHelpCommand(false);
+      editableRef.current.textContent = "";
+      setTimeout(() => {
+        updateCaretPosition();
+        // Refocus the editable element after updating caret position and clearing content
+        editableRef.current.focus();
+      }, 0);
+
+    }
+  }, [executeHelpCommand, setExecuteHelpCommand]);
 
   return (
     <>

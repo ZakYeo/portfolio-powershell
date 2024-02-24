@@ -14,6 +14,7 @@ function App() {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [typingFinished, setTypingFinished] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [executeHelpCommand, setExecuteHelpCommand] = useState(false);
 
 
   useEffect(() => {
@@ -45,9 +46,9 @@ function App() {
     <>
       <div className="appContainer">
         {loading ? <></> : <PowershellTitle onTypingFinished={() => setTypingFinished(true)} shouldAnimate={shouldAnimate} />}
-        {typingFinished && <TerminalInput />}
+        {typingFinished && <TerminalInput executeHelpCommand={executeHelpCommand} setExecuteHelpCommand={setExecuteHelpCommand} />}
       </div >
-      <HelpButtonAndModal />
+      <HelpButtonAndModal setExecuteHelpCommand={setExecuteHelpCommand} />
     </>
   );
 }
