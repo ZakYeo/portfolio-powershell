@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+/src/cloud-resources/lambdas/fetchRecentGithubProjects/node_modules
+*.env
