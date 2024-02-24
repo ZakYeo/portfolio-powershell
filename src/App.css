@@ -10,15 +10,15 @@ body {
   font-family: 'Cascadia Code', monospace;
 }
 
+
 .inputWrapper {
-  display: inline-flex;
-  align-items: center;
   position: relative;
   max-width: 100vw;
 }
 
 .commandOutputContainer {
-  padding: 0.2rem; /* Padding to match input container */
+  padding: 0.2rem;
+  /* Padding to match input container */
 }
 
 

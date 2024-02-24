@@ -11,5 +11,5 @@ export const executeCommand = (commandName, args) => {
   if (CommandComponent) {
     return <CommandComponent {...args} />;
   }
-  return <div>Command not found: {commandName}</div>;
+  return <div style={{ paddingBottom: '0.2rem', paddingTop: '0.2rem' }}>Command not found: {commandName}</div>;
 };
