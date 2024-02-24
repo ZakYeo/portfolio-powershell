@@ -21,7 +21,8 @@ const HelpButtonAndModal = () => {
                 ]}
             >
                 <p>Welcome to my website!</p>
-                <p>Here, you will find that this is not your traditional website. <br /> To navigate this website, you must enter a command into the input, and press enter. <br />Don't worry, it's easy! Start by trying the command 'help'. </p>
+                <p>Here, you will find that this is not your traditional website. <br /> To navigate this website, you must type a command into the input, and press enter.</p>
+                <p>Don't worry, it's easy! Start by trying the command 'help'. </p>
                 <p>Once you get comfortable, you can find information about myself & fun & interesting features I've implemented into this site.</p>
                 <p>Enjoy!</p>
             </Modal>
