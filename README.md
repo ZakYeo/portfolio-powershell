@@ -5,20 +5,26 @@ This is a personally designed website that simulates a terminal interface in the
 
 The interface allows users to enter commands using the Enter key and view them as part of the terminal history. By entering commands, you may navigate my portfolio or have fun trying the commands I've implemented.
 
+Some of the commands ping an external API, hosted on AWS, which call internal lambdas. The code for these resources can be found in `/cloud-resources`
+
 ## Features
 
 - Custom Terminal UI with a blinking caret
 - Input field for command entry
 - Display area for previous commands
+- `help` command -> View existing commands
+- `cd` command -> Change directory
+- `projects` command -> View my recent projects on Github
+- Help button (brings up help modal once pressed)
 
 ## Planned Features
 
-- Command recognition & processing, e.g:
-  - `help` -> View existing commands list
-  - `projects` -> View my developer projects
-  - `cd` -> Change directory
+- New commands:
+  - `experience` -> Show my work history & experience
+  - `links` -> Links to GitHub, LinkedIn, etc.
   - `mkdir` -> Make a directory
   - `open` -> Open a URL
+- Command aliases (multiple command names for a single command)
 - Terminal themes
 - Swap operating systems e.g: Ubuntu, MacOS
 - Swap from block caret to line caret
