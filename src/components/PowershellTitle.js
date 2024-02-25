@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
 
+const lines = [
+  "Portfolio PowerShell",
+  "Copyright (C) Zak Yeomanson. All rights reserved.",
+];
 
 const PowershellTitle = ({ onTypingFinished, shouldAnimate }) => {
-  const lines = [
-    "Portfolio PowerShell",
-    "Copyright (C) Zak Yeomanson. All rights reserved.",
-  ];
-
-
   const [typedLines, setTypedLines] = useState(shouldAnimate ? [] : lines);
 
   useEffect(() => {
     if (shouldAnimate) {
-
-
       const typeLine = (lineIndex) => {
         if (lineIndex < lines.length) {
           const line = lines[lineIndex];
@@ -44,14 +40,12 @@ const PowershellTitle = ({ onTypingFinished, shouldAnimate }) => {
         }
       };
 
-
-
       // Start typing the first line
       typeLine(0);
     } else {
       onTypingFinished();
     }
-  }, []);
+  }, [onTypingFinished, shouldAnimate]);
 
   return (
     <div style={styles.titleText}>
