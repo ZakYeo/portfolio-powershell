@@ -5,7 +5,7 @@ This is a personally designed website that simulates a terminal interface in the
 
 The interface allows users to enter commands using the Enter key and view them as part of the terminal history. By entering commands, you may navigate my portfolio or have fun trying the commands I've implemented.
 
-Some of the commands ping an external API, hosted on AWS, which call internal lambdas. The code for these resources can be found in `/cloud-resources`
+Some of the commands ping an external API, hosted on AWS, which call internal lambdas. The code for these resources can be found in `src/cloud-resources`
 
 ## Features
 
