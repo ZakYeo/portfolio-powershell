@@ -4,6 +4,7 @@ export const HELP_CMD_OUTPUT = [
   "help -> View command list",
   "cd -> Change directory",
   "projects -> View my recent projects",
+  "experience -> View my work history & experience",
 ];
 
 export const EXPERIENCE_CMD_OUTPUT = [
