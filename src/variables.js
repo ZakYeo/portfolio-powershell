@@ -5,6 +5,7 @@ export const HELP_CMD_OUTPUT = [
   "cd -> Change directory",
   "projects -> View my recent projects",
   "experience -> View my work history & experience",
+  "education -> View my education",
 ];
 
 export const EXPERIENCE_CMD_OUTPUT = [
@@ -33,3 +34,7 @@ export const EXPERIENCE_CMD_OUTPUT = [
   },
 
 ];
+
+export const EDUCATION_CMD_OUTPUT = [
+  ["Bournemouth University", "First Class Honours in Computing"],
+]

@@ -9,6 +9,7 @@ import ChangeDirectory from "./commands/ChangeDirectory";
 import Projects from "./commands/Projects";
 import HelpButtonAndModal from "./components/HelpButtonAndModal";
 import Experience from "./commands/Experience";
+import Education from "./commands/Education";
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
     registerCommand("cd", ChangeDirectory);
     registerCommand("projects", Projects);
     registerCommand("experience", Experience);
+    registerCommand("education", Education);
     styleBody();
 
     setLoading(false);
