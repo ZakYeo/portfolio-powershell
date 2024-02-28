@@ -10,6 +10,7 @@ import Projects from "./commands/Projects";
 import HelpButtonAndModal from "./components/HelpButtonAndModal";
 import Experience from "./commands/Experience";
 import Education from "./commands/Education";
+import PrintWorkingDirectory from "./commands/PrintWorkingDirectory";
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
     registerCommand("projects", Projects);
     registerCommand("experience", Experience);
     registerCommand("education", Education);
+    registerCommand("pwd", PrintWorkingDirectory);
     styleBody();
 
     setLoading(false);
