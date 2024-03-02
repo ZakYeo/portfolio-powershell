@@ -1,57 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { TypeAnimation } from 'react-type-animation'
 
-const lines = [
-  "Portfolio PowerShell",
-  "Copyright (C) Zak Yeomanson. All rights reserved.",
-];
 
 const PowershellTitle = ({ onTypingFinished, shouldAnimate }) => {
-  const [typedLines, setTypedLines] = useState(shouldAnimate ? [] : lines);
+
+
+
+  const title = "Portfolio PowerShell\nCopyright (C) Zak Yeomanson. All rights reserved.";
+  const helpMsg = shouldAnimate ? "\n\nType 'help' or hit the '?' button to get started." : ""; // Only show on first time opening
+  const lines = [`${title}${helpMsg}`, () => setTimeout(() => onTypingFinished(), 1000)];
 
   useEffect(() => {
-    if (shouldAnimate) {
-      const typeLine = (lineIndex) => {
-        if (lineIndex < lines.length) {
-          const line = lines[lineIndex];
-          let typedText = "";
-          let charIndex = 0;
-
-          const typeChar = () => {
-            typedText += line[charIndex++];
-            // Update the current line and keep previous ones
-            setTypedLines((prevLines) => [
-              ...prevLines.slice(0, lineIndex),
-              typedText,
-              ...prevLines.slice(lineIndex + 1),
-            ]);
-
-            if (charIndex < line.length) {
-              setTimeout(typeChar, 30);
-            } else if (lineIndex < lines.length - 1) {
-              // Move to the next line after a short delay
-              setTimeout(() => typeLine(lineIndex + 1), 100);
-            } else {
-              // All lines are typed, call the callback function
-              setTimeout(() => onTypingFinished(), 500);
-            }
-          };
-
-          typeChar();
-        }
-      };
-
-      // Start typing the first line
-      typeLine(0);
-    } else {
+    if (!shouldAnimate) {
+      // Execute right away
       onTypingFinished();
     }
-  }, [onTypingFinished, shouldAnimate]);
+  }, [shouldAnimate]);
 
   return (
     <div style={styles.titleText}>
-      {typedLines.map((line, index) => (
-        <div key={index}>{line}</div>
-      ))}
+      {shouldAnimate ?
+        <TypeAnimation sequence={lines} wrapper="div" speed={50} style={{ whiteSpace: 'pre-line' }} cursor={false} />
+        :
+        <div style={{ whiteSpace: 'pre-line' }}>
+          {lines[0]}
+        </div>
+      }
     </div>
   );
 };
