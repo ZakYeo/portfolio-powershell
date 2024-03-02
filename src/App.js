@@ -11,6 +11,7 @@ import HelpButtonAndModal from "./components/HelpButtonAndModal";
 import Experience from "./commands/Experience";
 import Education from "./commands/Education";
 import PrintWorkingDirectory from "./commands/PrintWorkingDirectory";
+import About from "./commands/About";
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
     registerCommand("experience", Experience);
     registerCommand("education", Education);
     registerCommand("pwd", PrintWorkingDirectory);
+    registerCommand("about", About);
     styleBody();
 
     setLoading(false);

@@ -6,6 +6,7 @@ export const HELP_CMD_OUTPUT = [
   "projects -> View my recent projects",
   "experience -> View my work history & experience",
   "education -> View my education",
+  "about -> View my about me",
   "pwd -> Print the current working directory",
 ];
 
@@ -39,3 +40,16 @@ export const EXPERIENCE_CMD_OUTPUT = [
 export const EDUCATION_CMD_OUTPUT = [
   ["Bournemouth University", "First Class Honours in Computing"],
 ]
+
+export const ABOUT_CMD_OUTPUT = [
+  "Hello! Thanks for visiting my website!",
+  "My name is Zak Yeomanson.",
+  "I would describe myself as a highly inquisitive & driven individual, whose passion for technology lead me to pursue a career in software engineering & development.",
+  "This passion begun at a very young age, thanks to my father, who was a retro games collector & also fond of technology. I can even remember having an arcade machine in my father's office for a period of time!",
+  "This excitement & love for technology is something that has been consistent with me throughout my life, and has only grown larger & stronger as I've aged.",
+  "My first programming language was Python, which I begun at around the age of 15. I begun this at school, but I was mostly self-taught using free resources online & books.",
+  "Not long after this I started picking up a bit of lua. This was because the game I was playing at the time, Garry's Mod, allowed the use of lua to create your own custom addons.",
+  "Eventually, thanks to my education, I was able to touch on a variety of languages such as Kotlin, SQL, C#, but most of my experience today resides in JavaScript, Python & Java.",
+  "I have strong aspirations, and hope to eventually start my own technology business. In the meantime, I'm striving to learn as much as I can, not only to achieve this goal, but to have a tangible impact on the world.",
+  "If you want to learn more, don't hesitate to reach out to me. I'm always open to new opportunities & experiences."
+];
