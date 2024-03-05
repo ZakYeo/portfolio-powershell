@@ -12,7 +12,7 @@ import Experience from "./commands/Experience";
 import Education from "./commands/Education";
 import PrintWorkingDirectory from "./commands/PrintWorkingDirectory";
 import About from "./commands/About";
-
+import Pong from "./commands/Pong";
 function App() {
 
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -40,6 +40,7 @@ function App() {
     registerCommand("education", Education);
     registerCommand("pwd", PrintWorkingDirectory);
     registerCommand("about", About);
+    registerCommand("pong", Pong);
     styleBody();
 
     setLoading(false);
