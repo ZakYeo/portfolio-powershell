@@ -1,6 +1,13 @@
 
 import React, { useEffect, useRef } from 'react';
 
+
+
+/**
+ * Pong using HTML Canvas element
+ * Up & Down arrow to move player one
+ * W & S to move player two
+ */
 const Pong = () => {
   const canvasRef = useRef(null);
   const leftPaddleYRef = useRef(250);
@@ -17,11 +24,21 @@ const Pong = () => {
 
     const paddleWidth = 10, paddleHeight = 100;
     const paddleSpeed = 15;
+
+    /**
+    * Draws a paddle on the canvas.
+    * @param {number} x - The x position of the paddle.
+    * @param {number} y - The y position of the paddle.
+    */
     const drawPaddle = (x, y) => {
       ctx.fillStyle = 'white';
       ctx.fillRect(x, y, paddleWidth, paddleHeight);
     };
 
+    /**
+     * Draws the ball on the canvas.
+     * @param {object} ball - The ball object with properties x, y, and radius.
+     */
     const drawBall = (ball) => {
       ctx.fillStyle = 'white';
       ctx.beginPath();
@@ -29,6 +46,10 @@ const Pong = () => {
       ctx.fill();
     };
 
+    /**
+     * Updates the positions of the paddles based on the keys pressed.
+     * @param {number} deltaTime - The time difference since the last frame, used for smooth animations.
+     */
     const updatePaddlePositions = (deltaTime) => {
       if (keysPressed.current.w) leftPaddleYRef.current = Math.max(leftPaddleYRef.current - paddleSpeed * deltaTime, 0);
       if (keysPressed.current.s) leftPaddleYRef.current = Math.min(leftPaddleYRef.current + paddleSpeed * deltaTime, canvas.height - paddleHeight);
@@ -36,7 +57,48 @@ const Pong = () => {
       if (keysPressed.current.ArrowDown) rightPaddleYRef.current = Math.min(rightPaddleYRef.current + paddleSpeed * deltaTime, canvas.height - paddleHeight);
     };
 
+    /**
+     * Checks for collisions between the ball and the paddles, and adjusts the ball's speed and position accordingly.
+     */
+    const checkPaddleCollision = () => {
+      const ball = ballRef.current;
+      const isCollidingWithLeftPaddle = ball.x - ball.radius <= paddleWidth &&
+        ball.y >= leftPaddleYRef.current &&
+        ball.y <= leftPaddleYRef.current + paddleHeight;
+      const isCollidingWithRightPaddle = ball.x + ball.radius >= canvas.width - paddleWidth &&
+        ball.y >= rightPaddleYRef.current &&
+        ball.y <= rightPaddleYRef.current + paddleHeight;
 
+      if (isCollidingWithLeftPaddle || isCollidingWithRightPaddle) {
+        ball.speedX = -ball.speedX;
+
+        // Adjust the ball position slightly away from the paddle to prevent sticking
+        if (isCollidingWithLeftPaddle) {
+          ball.x = paddleWidth + ball.radius + 1;
+        } else if (isCollidingWithRightPaddle) {
+          ball.x = canvas.width - paddleWidth - ball.radius - 1;
+        }
+      }
+    };
+
+    /**
+     * Resets the ball's position and speed when it collides with the left or right walls.
+    */
+    const resetBallOnWallCollision = () => {
+      const ball = ballRef.current;
+      if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) {
+        // Reset the ball to the center
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        ball.speedX = -ball.speedX;
+        ball.speedY = ball.speedY;
+      }
+    };
+
+    /**
+     * Updates the ball's position based on its speed and handles collisions with walls and paddles.
+     * @param {number} deltaTime - The time difference since the last frame.
+     */
     const updateBallPosition = (deltaTime) => {
       const ball = ballRef.current;
       ball.x += ball.speedX * deltaTime;
@@ -45,19 +107,17 @@ const Pong = () => {
       // Ball collision with top and bottom walls
       if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
         ball.speedY = -ball.speedY;
-        // Adjust ball position to prevent "sticking" to the wall
         ball.y = ball.y - ball.radius < 0 ? ball.radius : canvas.height - ball.radius;
       }
 
-
-      // Ball collision with left and right walls
-      if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) {
-        ball.speedX = -ball.speedX;
-        // Adjust ball position to prevent "sticking" to the wall
-        ball.x = ball.x - ball.radius < 0 ? ball.radius : canvas.width - ball.radius;
-      }
+      checkPaddleCollision();
+      resetBallOnWallCollision();
     };
 
+    /**
+     * The main game loop, responsible for updating game state and redrawing the scene.
+     * @param {number} time - The current timestamp.
+     */
     const gameLoop = (time) => {
       const deltaTime = lastTimeRef.current ? (time - lastTimeRef.current) / 16.67 : 0; // Normalize deltaTime
       updatePaddlePositions(deltaTime);
