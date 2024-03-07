@@ -19,6 +19,7 @@ function App() {
   const [typingFinished, setTypingFinished] = useState(false);
   const [loading, setLoading] = useState(true);
   const [executeHelpCommand, setExecuteHelpCommand] = useState(false);
+  const [hasQuitPong, setHasQuitPong] = useState(true);
 
 
   useEffect(() => {
@@ -40,7 +41,7 @@ function App() {
     registerCommand("education", Education);
     registerCommand("pwd", PrintWorkingDirectory);
     registerCommand("about", About);
-    registerCommand("pong", Pong);
+    registerCommand("pong", Pong, { hasQuitPong: hasQuitPong, setHasQuitPong: setHasQuitPong });
     styleBody();
 
     setLoading(false);
@@ -55,7 +56,7 @@ function App() {
     <>
       <div className="appContainer">
         {loading ? <></> : <PowershellTitle onTypingFinished={() => setTypingFinished(true)} shouldAnimate={shouldAnimate} />}
-        {typingFinished && <TerminalInput executeHelpCommand={executeHelpCommand} setExecuteHelpCommand={setExecuteHelpCommand} />}
+        {typingFinished && <TerminalInput executeHelpCommand={executeHelpCommand} setExecuteHelpCommand={setExecuteHelpCommand} hasQuitPong={hasQuitPong} />}
       </div >
       <HelpButtonAndModal setExecuteHelpCommand={setExecuteHelpCommand} />
     </>

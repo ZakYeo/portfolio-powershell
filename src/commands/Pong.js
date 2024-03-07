@@ -1,5 +1,6 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 
 
 
@@ -8,15 +9,31 @@ import React, { useEffect, useRef } from 'react';
  * Up & Down arrow to move player one
  * W & S to move player two
  */
-const Pong = () => {
+const Pong = ({ hasQuitPong, setHasQuitPong }) => {
+
   const canvasRef = useRef(null);
   const leftPaddleYRef = useRef(250);
   const rightPaddleYRef = useRef(250);
   const lastTimeRef = useRef(null);
   const ballRef = useRef({ x: 400, y: 300, speedX: 4, speedY: 4, radius: 10 });
   const keysPressed = useRef({ w: false, s: false, ArrowUp: false, ArrowDown: false });
+  const [quitGame, setQuitGame] = useState(false); // State to track if the game has been quit
+
+  const quitGameRef = useRef(quitGame);
+  useEffect(() => {
+    quitGameRef.current = quitGame;
+  }, [quitGame]);
 
   useEffect(() => {
+    setHasQuitPong(false);
+
+    const handleQuitKeyPress = (event) => {
+      if (event.key === 'Escape' || event.key.toLowerCase() === 'q') {
+        setHasQuitPong(true); // Update parent component state
+        setQuitGame(true); // Set quitGame to true to stop the game loop and key handling
+      }
+    };
+
 
     const updateCanvasSize = () => {
       const canvas = canvasRef.current;
@@ -137,37 +154,48 @@ const Pong = () => {
      * @param {number} time - The current timestamp.
      */
     const gameLoop = (time) => {
-      const deltaTime = lastTimeRef.current ? (time - lastTimeRef.current) / 16.67 : 0; // Normalize deltaTime
-      updatePaddlePositions(deltaTime);
-      updateBallPosition(deltaTime);
+      if (!quitGameRef.current) {
+        const deltaTime = lastTimeRef.current ? (time - lastTimeRef.current) / 16.67 : 0;
+        updatePaddlePositions(deltaTime);
+        updateBallPosition(deltaTime);
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawPaddle(0, leftPaddleYRef.current);
-      drawPaddle(canvas.width - paddleWidth, rightPaddleYRef.current);
-      drawBall(ballRef.current);
+        const ctx = canvasRef.current.getContext('2d');
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        drawPaddle(0, leftPaddleYRef.current);
+        drawPaddle(canvasRef.current.width - paddleWidth, rightPaddleYRef.current);
+        drawBall(ballRef.current);
 
-      lastTimeRef.current = time;
-      requestAnimationFrame(gameLoop);
+        lastTimeRef.current = time;
+        requestAnimationFrame(gameLoop);
+      }
     };
 
     const handleKeyDown = (e) => {
+      if (quitGame) return; // Ignore keydown events if game is quit
       keysPressed.current[e.key] = true;
     };
 
+
     const handleKeyUp = (e) => {
+      if (quitGame) return; // Ignore keyup events if game is quit
       keysPressed.current[e.key] = false;
     };
 
+
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('keydown', handleQuitKeyPress);
+
 
     requestAnimationFrame(gameLoop);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener('keydown', handleQuitKeyPress);
+      window.removeEventListener('resize', updateCanvasSize);
     };
-  }, []);
+  }, [quitGame]);
 
   return <canvas ref={canvasRef} style={{ background: 'black' }}></canvas>;
 };

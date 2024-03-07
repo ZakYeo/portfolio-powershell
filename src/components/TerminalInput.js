@@ -5,13 +5,29 @@ import "../App.css";
 /**
  * A terminal-style input component with a block caret that allows users to enter and execute commands.
  */
-const TerminalInput = ({ executeHelpCommand, setExecuteHelpCommand }) => {
+const TerminalInput = ({ executeHelpCommand, setExecuteHelpCommand, hasQuitPong }) => {
   const editableRef = useRef(null);
   const hiddenTextRef = useRef(null);
   const [url, setUrl] = useState(window.location.href);
   const [caretPosition, setCaretPosition] = useState({ left: 0, top: 0 });
   let lastSelectionRange = useRef(null);
   const [commandOutputs, setCommandOutputs] = useState([]);
+
+  useEffect(() => {
+    // Check if the pong game has been quit
+    if (hasQuitPong) {
+      // Ensure the input is editable
+      const editableElement = editableRef.current;
+      const caretElement = document.querySelector('.caret');
+      if (editableElement) {
+        setTimeout(() => { // Use a slight delay to ensure the DOM and React states are fully updated
+          editableElement.contentEditable = true;
+          editableElement.focus();
+          caretElement.style.backgroundColor = hasQuitPong ? 'white' : 'transparent';
+        }, 0);
+      }
+    }
+  }, [hasQuitPong]);
 
   /**
      * Updates the caret position based on the current selection within the editable area.
@@ -211,7 +227,7 @@ const TerminalInput = ({ executeHelpCommand, setExecuteHelpCommand }) => {
         {url}&gt;
         <span className="inputWrapper">
           <span
-            contentEditable
+            contentEditable={hasQuitPong}
             className="input"
             ref={editableRef}
             suppressContentEditableWarning={true}
@@ -222,6 +238,7 @@ const TerminalInput = ({ executeHelpCommand, setExecuteHelpCommand }) => {
             style={{
               left: caretPosition.left, // Used to calculate the caret position (horizontally)
               top: caretPosition.top, // Used to calculate the caret position (vertically)
+              backgroundColor: hasQuitPong ? 'white' : 'transparent' // Cannot edit while in pong, hide this
             }}
           ></span>{" "}
           {/* This span acts as the blinking caret */}
