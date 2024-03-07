@@ -34,14 +34,15 @@ function App() {
 
     checkVisit();
 
-    registerCommand("help", Help);
-    registerCommand("cd", ChangeDirectory);
-    registerCommand("projects", Projects);
-    registerCommand("experience", Experience);
-    registerCommand("education", Education);
-    registerCommand("pwd", PrintWorkingDirectory);
-    registerCommand("about", About);
-    registerCommand("pong", Pong, { hasQuitPong: hasQuitPong, setHasQuitPong: setHasQuitPong });
+
+    registerCommand("help", Help, {}, "Display help for all commands");
+    registerCommand("cd", ChangeDirectory, {}, "Change directory");
+    registerCommand("projects", Projects, {}, "Query GitHub API to view my recent projects");
+    registerCommand("experience", Experience, {}, "View my work history & experience");
+    registerCommand("education", Education, {}, "View my education");
+    registerCommand("pwd", PrintWorkingDirectory, {}, "Print the current working directory");
+    registerCommand("about", About, {}, "View about me");
+    registerCommand("pong", Pong, { hasQuitPong: hasQuitPong, setHasQuitPong: setHasQuitPong }, "Play a two player game of Pong");
     styleBody();
 
     setLoading(false);

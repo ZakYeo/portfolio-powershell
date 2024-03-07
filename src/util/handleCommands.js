@@ -1,8 +1,8 @@
-const commands = {};
+export const commands = {};
 
 // Register a command with a name and a handler function
-export const registerCommand = (name, Component, defaultProps = {}) => {
-  commands[name] = { Component, defaultProps };
+export const registerCommand = (name, Component, defaultProps = {}, description = '') => {
+  commands[name] = { Component, defaultProps, description };
 };
 
 // Execute a command if it exists

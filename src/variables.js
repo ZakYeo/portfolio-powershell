@@ -1,15 +1,3 @@
-export const HELP_CMD_OUTPUT = [
-  "Welcome to Zak's Website!",
-  "Enter any of the commands below & press enter to execute them:",
-  "help -> View command list",
-  "cd -> Change directory",
-  "projects -> View my recent projects",
-  "experience -> View my work history & experience",
-  "education -> View my education",
-  "about -> View my about me",
-  "pwd -> Print the current working directory",
-  "pong -> Play a game of two player pong"
-];
 
 export const EXPERIENCE_CMD_OUTPUT = [
   {

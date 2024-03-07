@@ -1,6 +1,11 @@
-import { HELP_CMD_OUTPUT } from "../variables";
+import { commands } from "../util/handleCommands";
 
 const Help = () => {
+  // Convert commands object to an array, sort it by command name, then map for display
+  const commandHelpOutput = Object.keys(commands)
+    .sort() // Sort command names alphabetically
+    .map(key => `${key} - ${commands[key].description}`);
+
   return (
     <div
       style={{
@@ -11,11 +16,10 @@ const Help = () => {
         paddingBottom: "0.5rem",
       }}
     >
-      {HELP_CMD_OUTPUT.map((item, index) => (
+      {commandHelpOutput.map((item, index) => (
         <div key={index}>{item}</div>
       ))}
     </div>
   );
 };
-
 export default Help;
