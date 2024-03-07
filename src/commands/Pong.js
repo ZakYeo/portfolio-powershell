@@ -17,6 +17,24 @@ const Pong = () => {
   const keysPressed = useRef({ w: false, s: false, ArrowUp: false, ArrowDown: false });
 
   useEffect(() => {
+
+    const updateCanvasSize = () => {
+      const canvas = canvasRef.current;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight * 0.8; // 80 % of window height
+
+      // Adjust ball and paddle positions based on the new canvas size
+      ballRef.current.x = canvas.width / 2;
+      ballRef.current.y = canvas.height / 2;
+      leftPaddleYRef.current = (canvas.height - 100) / 2; // Center left paddle
+      rightPaddleYRef.current = (canvas.height - 100) / 2; // Center right paddle
+    };
+
+    // Delay setting the initial canvas size to ensure the page layout has loaded
+    setTimeout(updateCanvasSize, 0);
+
+    // Update canvas size on window resize
+    window.addEventListener('resize', updateCanvasSize);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     canvas.width = 800;
