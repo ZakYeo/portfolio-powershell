@@ -8,6 +8,7 @@ export const HELP_CMD_OUTPUT = [
   "education -> View my education",
   "about -> View my about me",
   "pwd -> Print the current working directory",
+  "pong -> Play a game of two player pong"
 ];
 
 export const EXPERIENCE_CMD_OUTPUT = [
