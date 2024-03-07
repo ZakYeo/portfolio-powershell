@@ -17,7 +17,9 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
   const lastTimeRef = useRef(null);
   const ballRef = useRef({ x: 400, y: 300, speedX: 4, speedY: 4, radius: 10 });
   const keysPressed = useRef({ w: false, s: false, ArrowUp: false, ArrowDown: false });
-  const [quitGame, setQuitGame] = useState(false); // State to track if the game has been quit
+  const [quitGame, setQuitGame] = useState(false);
+  const [scorePlayerOne, setScorePlayerOne] = useState(0);
+  const [scorePlayerTwo, setScorePlayerTwo] = useState(0);
 
   const quitGameRef = useRef(quitGame);
   useEffect(() => {
@@ -29,8 +31,8 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
 
     const handleQuitKeyPress = (event) => {
       if (event.key === 'Escape' || event.key.toLowerCase() === 'q') {
-        setHasQuitPong(true); // Update parent component state
-        setQuitGame(true); // Set quitGame to true to stop the game loop and key handling
+        setHasQuitPong(true);
+        setQuitGame(true);
       }
     };
 
@@ -117,17 +119,30 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
     };
 
     /**
-     * Resets the ball's position and speed when it collides with the left or right walls.
+    * Resets the ball's position and speed when it collides with the left or right walls.
     */
     const resetBallOnWallCollision = () => {
       const ball = ballRef.current;
-      if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) {
-        // Reset the ball to the center
-        ball.x = canvas.width / 2;
-        ball.y = canvas.height / 2;
-        ball.speedX = -ball.speedX;
-        ball.speedY = ball.speedY;
+      if (ball.x - ball.radius < 0) {
+        // Ball hit the left wall, score for player two
+        setScorePlayerTwo((prevScore) => prevScore + 1);
+        resetBall();
+      } else if (ball.x + ball.radius > canvas.width) {
+        // Ball hit the right wall, score for player one
+        setScorePlayerOne((prevScore) => prevScore + 1);
+        resetBall();
       }
+    };
+
+    /**
+    * Resets the ball to the center and inverts its X-direction speed.
+    */
+    const resetBall = () => {
+      const ball = ballRef.current;
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+      ball.speedX = -ball.speedX;
+      ball.speedY = ball.speedY;
     };
 
     /**
@@ -150,6 +165,17 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
     };
 
     /**
+    * Draws the current score for both players on the canvas.
+    */
+    const drawScore = () => {
+      const ctx = canvasRef.current.getContext('2d');
+      ctx.fillStyle = 'white';
+      ctx.font = '30px Arial';
+      ctx.fillText(`Player 1: ${scorePlayerOne}`, 50, 50);
+      ctx.fillText(`Player 2: ${scorePlayerTwo}`, canvas.width - 200, 50);
+    };
+
+    /**
      * The main game loop, responsible for updating game state and redrawing the scene.
      * @param {number} time - The current timestamp.
      */
@@ -166,6 +192,7 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
         drawBall(ballRef.current);
 
         lastTimeRef.current = time;
+        drawScore();
         requestAnimationFrame(gameLoop);
       }
     };
@@ -195,7 +222,7 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       document.removeEventListener('keydown', handleQuitKeyPress);
       window.removeEventListener('resize', updateCanvasSize);
     };
-  }, [quitGame]);
+  }, [quitGame, scorePlayerOne, scorePlayerTwo]);
 
   return <canvas ref={canvasRef} style={{ background: 'black' }}></canvas>;
 };
