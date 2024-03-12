@@ -15,6 +15,10 @@ Some of the commands ping an external API, hosted on AWS, which call internal la
 - `help` command -> View existing commands
 - `cd` command -> Change directory
 - `projects` command -> View my recent projects on Github
+- `experience` command -> View my work experience
+- `pwd` -> Print working directory
+- `about` -> View about me
+- `pong` -> Play two player pong
 - Help button (brings up help modal once pressed)
 
 ## Planned Features
