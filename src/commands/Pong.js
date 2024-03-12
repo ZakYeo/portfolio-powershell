@@ -48,7 +48,7 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       leftPaddleYRef.current = (canvas.height - 100) / 2; // Center left paddle
       rightPaddleYRef.current = (canvas.height - 100) / 2; // Center right paddle
 
-      const baseSpeed = canvas.width / 200;
+      const baseSpeed = canvas.width / 150;
       ballRef.current.speedX = baseSpeed;
       ballRef.current.speedY = baseSpeed;
     };
