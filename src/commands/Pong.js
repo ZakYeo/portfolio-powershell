@@ -47,6 +47,10 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       ballRef.current.y = canvas.height / 2;
       leftPaddleYRef.current = (canvas.height - 100) / 2; // Center left paddle
       rightPaddleYRef.current = (canvas.height - 100) / 2; // Center right paddle
+
+      const baseSpeed = canvas.width / 200;
+      ballRef.current.speedX = baseSpeed;
+      ballRef.current.speedY = baseSpeed;
     };
 
     // Delay setting the initial canvas size to ensure the page layout has loaded
