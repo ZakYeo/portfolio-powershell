@@ -1,9 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-
-
-
 /**
  * Pong using HTML Canvas element
  * Up & Down arrow to move player one
@@ -15,7 +12,7 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
   const leftPaddleYRef = useRef(250);
   const rightPaddleYRef = useRef(250);
   const lastTimeRef = useRef(null);
-  const ballRef = useRef({ x: 400, y: 300, speedX: 4, speedY: 4, radius: 10 });
+  const ballRef = useRef({ x: 400, y: 300, speedX: 0, speedY: 0, radius: 10 });
   const keysPressed = useRef({ w: false, s: false, ArrowUp: false, ArrowDown: false });
   const [quitGame, setQuitGame] = useState(false);
   const [scorePlayerOne, setScorePlayerOne] = useState(0);
@@ -36,6 +33,22 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       }
     };
 
+    const initializeBall = () => {
+      const canvas = canvasRef.current;
+
+      const baseSpeed = canvas.width / 150; // Base speed, adjust as needed
+      const angle = Math.random() * Math.PI * 2; // Random angle in radians
+
+      ballRef.current = {
+        ...ballRef.current,
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        speedX: Math.cos(angle) * baseSpeed,
+        speedY: Math.sin(angle) * baseSpeed,
+      };
+    };
+    initializeBall();
+
 
     const updateCanvasSize = () => {
       const canvas = canvasRef.current;
@@ -48,9 +61,7 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       leftPaddleYRef.current = (canvas.height - 100) / 2; // Center left paddle
       rightPaddleYRef.current = (canvas.height - 100) / 2; // Center right paddle
 
-      const baseSpeed = canvas.width / 150;
-      ballRef.current.speedX = baseSpeed;
-      ballRef.current.speedY = baseSpeed;
+
     };
 
     // Delay setting the initial canvas size to ensure the page layout has loaded
@@ -130,24 +141,15 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       if (ball.x - ball.radius < 0) {
         // Ball hit the left wall, score for player two
         setScorePlayerTwo((prevScore) => prevScore + 1);
-        resetBall();
+        initializeBall();
       } else if (ball.x + ball.radius > canvas.width) {
         // Ball hit the right wall, score for player one
         setScorePlayerOne((prevScore) => prevScore + 1);
-        resetBall();
+        initializeBall();
       }
     };
 
-    /**
-    * Resets the ball to the center and inverts its X-direction speed.
-    */
-    const resetBall = () => {
-      const ball = ballRef.current;
-      ball.x = canvas.width / 2;
-      ball.y = canvas.height / 2;
-      ball.speedX = -ball.speedX;
-      ball.speedY = ball.speedY;
-    };
+
 
     /**
      * Updates the ball's position based on its speed and handles collisions with walls and paddles.
