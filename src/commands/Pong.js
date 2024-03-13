@@ -33,11 +33,18 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       }
     };
 
+
     const initializeBall = () => {
       const canvas = canvasRef.current;
 
       const baseSpeed = canvas.width / 150; // Base speed, adjust as needed
-      const angle = Math.random() * Math.PI * 2; // Random angle in radians
+      let angle;
+
+      // Ensure the angle is not too steep by keeping it within specified bounds
+      do {
+        angle = Math.random() * Math.PI * 2;
+      } while (angle > Math.PI / 4 && angle < 3 * Math.PI / 4 || // Exclude steep upwards
+        angle > 5 * Math.PI / 4 && angle < 7 * Math.PI / 4); // Exclude steep downwards
 
       ballRef.current = {
         ...ballRef.current,
