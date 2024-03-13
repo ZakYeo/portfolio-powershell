@@ -151,11 +151,12 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
         const paddleMovingDown = keysPressed.current.s;
         ball.speedX = Math.abs(ball.speedX); // Ensure ball moves right
 
-        // Adjust ball's Y speed based on impact point
-        ball.speedY = 5 * impactPoint;
-        // Adjust ball's speed based on paddle movement
-        //if (paddleMovingUp) ball.speedY -= 4;
-        //if (paddleMovingDown) ball.speedY += 4;
+        // Calculate new angle based on impact point
+        let angle = impactPoint * (Math.PI / 4); // Max reflection angle is 45 degrees
+        if (paddleMovingUp) angle -= Math.PI / 12; // Decrease angle if paddle moving up
+        if (paddleMovingDown) angle += Math.PI / 12; // Increase angle if paddle moving down
+        ball.speedY = currentVelocity * Math.sin(angle);
+        ball.speedX = currentVelocity * Math.cos(angle);
 
         ball.x = paddleWidth + ball.radius + 1; // Move ball slightly away from paddle
       }
@@ -166,26 +167,17 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
         const paddleMovingDown = keysPressed.current.ArrowDown;
         ball.speedX = -Math.abs(ball.speedX); // Ensure ball moves left
 
-        // Adjust ball's Y speed based on impact point
-        ball.speedY = 5 * impactPoint;
-        // Adjust ball's speed based on paddle movement
-        //if (paddleMovingUp) ball.speedY -= 4;
-        //if (paddleMovingDown) ball.speedY += 4;
+        // Calculate new angle based on impact point
+        let angle = impactPoint * (Math.PI / 4); // Max reflection angle is 45 degrees
+        if (paddleMovingUp) angle -= Math.PI / 12; // Decrease angle if paddle moving up
+        if (paddleMovingDown) angle += Math.PI / 12; // Increase angle if paddle moving down
+        ball.speedY = currentVelocity * Math.sin(angle);
+        ball.speedX = -currentVelocity * Math.cos(angle); // Negate to ensure ball moves left
 
         ball.x = canvas.width - paddleWidth - ball.radius - 1; // Move ball slightly away from paddle
       }
 
-      // Calculate the new speedX based on the constant velocity and the new speedY
-      const newSpeedXDirection = ball.speedX > 0 ? 1 : -1;
-      ball.speedX = newSpeedXDirection * Math.sqrt(currentVelocity ** 2 - ball.speedY ** 2);
 
-      // Adjust speeds to maintain constant velocity, ensuring no rounding errors exceed the desired speed
-      const recalculatedVelocity = Math.sqrt(ball.speedX ** 2 + ball.speedY ** 2);
-      if (recalculatedVelocity > currentVelocity) {
-        const adjustmentFactor = currentVelocity / recalculatedVelocity;
-        ball.speedX *= adjustmentFactor;
-        ball.speedY *= adjustmentFactor;
-      }
     };
     /**
     * Resets the ball's position and speed when it collides with the left or right walls.
