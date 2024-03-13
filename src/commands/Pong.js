@@ -33,7 +33,10 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       }
     };
 
-
+    /**
+     * Reset the ball to the center of the canvas
+     * Give it a randomly defined direction (with constraints)
+    */
     const initializeBall = () => {
       const canvas = canvasRef.current;
 
@@ -56,7 +59,9 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
     };
     initializeBall();
 
-
+    /**
+     * When the window gets bigger or smaller, auto adjust the canvas size to match
+    */
     const updateCanvasSize = () => {
       const canvas = canvasRef.current;
       canvas.width = window.innerWidth;
