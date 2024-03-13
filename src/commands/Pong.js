@@ -121,30 +121,72 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       if (keysPressed.current.ArrowDown) rightPaddleYRef.current = Math.min(rightPaddleYRef.current + paddleSpeed * deltaTime, canvas.height - paddleHeight);
     };
 
+
     /**
-     * Checks for collisions between the ball and the paddles, and adjusts the ball's speed and position accordingly.
+     * Checks for collisions between the ball and the paddles, adjusting the ball's direction while maintaining its speed.
+     * 
+     * The function first checks for collisions with the left and right paddles. If a collision is detected,
+     * it calculates the impact point relative to the center of the paddle to determine the new angle of reflection.
+     * 
+     * To ensure the ball's speed remains consistent after reflection, the function calculates the magnitude of the
+     * ball's velocity (its speed) before the collision and uses this to adjust the ball's speedX and speedY components
+     * after setting the new direction. This maintains the overall speed of the ball constant, altering only its direction.
+     *
+     *It also checks if the paddle is moving and adjusts the ball's velocity slightly to simulate a more dynamic bounce.
      */
     const checkPaddleCollision = () => {
       const ball = ballRef.current;
-      const isCollidingWithLeftPaddle = ball.x - ball.radius <= paddleWidth &&
-        ball.y >= leftPaddleYRef.current &&
-        ball.y <= leftPaddleYRef.current + paddleHeight;
-      const isCollidingWithRightPaddle = ball.x + ball.radius >= canvas.width - paddleWidth &&
-        ball.y >= rightPaddleYRef.current &&
-        ball.y <= rightPaddleYRef.current + paddleHeight;
+      const paddleHeightHalf = paddleHeight / 2;
+      let impactPoint;
 
-      if (isCollidingWithLeftPaddle || isCollidingWithRightPaddle) {
-        ball.speedX = -ball.speedX;
 
-        // Adjust the ball position slightly away from the paddle to prevent sticking
-        if (isCollidingWithLeftPaddle) {
-          ball.x = paddleWidth + ball.radius + 1;
-        } else if (isCollidingWithRightPaddle) {
-          ball.x = canvas.width - paddleWidth - ball.radius - 1;
-        }
+
+      // Calculate the current velocity of the ball
+      const currentVelocity = Math.sqrt(ball.speedX ** 2 + ball.speedY ** 2);
+
+      // Check collision with left paddle
+      if (ball.x - ball.radius <= paddleWidth && ball.y >= leftPaddleYRef.current && ball.y <= leftPaddleYRef.current + paddleHeight) {
+        impactPoint = (ball.y - (leftPaddleYRef.current + paddleHeightHalf)) / paddleHeightHalf;
+        const paddleMovingUp = keysPressed.current.w;
+        const paddleMovingDown = keysPressed.current.s;
+        ball.speedX = Math.abs(ball.speedX); // Ensure ball moves right
+
+        // Adjust ball's Y speed based on impact point
+        ball.speedY = 5 * impactPoint;
+        // Adjust ball's speed based on paddle movement
+        //if (paddleMovingUp) ball.speedY -= 4;
+        //if (paddleMovingDown) ball.speedY += 4;
+
+        ball.x = paddleWidth + ball.radius + 1; // Move ball slightly away from paddle
+      }
+      // Check collision with right paddle
+      else if (ball.x + ball.radius >= canvas.width - paddleWidth && ball.y >= rightPaddleYRef.current && ball.y <= rightPaddleYRef.current + paddleHeight) {
+        impactPoint = (ball.y - (rightPaddleYRef.current + paddleHeightHalf)) / paddleHeightHalf;
+        const paddleMovingUp = keysPressed.current.ArrowUp;
+        const paddleMovingDown = keysPressed.current.ArrowDown;
+        ball.speedX = -Math.abs(ball.speedX); // Ensure ball moves left
+
+        // Adjust ball's Y speed based on impact point
+        ball.speedY = 5 * impactPoint;
+        // Adjust ball's speed based on paddle movement
+        //if (paddleMovingUp) ball.speedY -= 4;
+        //if (paddleMovingDown) ball.speedY += 4;
+
+        ball.x = canvas.width - paddleWidth - ball.radius - 1; // Move ball slightly away from paddle
+      }
+
+      // Calculate the new speedX based on the constant velocity and the new speedY
+      const newSpeedXDirection = ball.speedX > 0 ? 1 : -1;
+      ball.speedX = newSpeedXDirection * Math.sqrt(currentVelocity ** 2 - ball.speedY ** 2);
+
+      // Adjust speeds to maintain constant velocity, ensuring no rounding errors exceed the desired speed
+      const recalculatedVelocity = Math.sqrt(ball.speedX ** 2 + ball.speedY ** 2);
+      if (recalculatedVelocity > currentVelocity) {
+        const adjustmentFactor = currentVelocity / recalculatedVelocity;
+        ball.speedX *= adjustmentFactor;
+        ball.speedY *= adjustmentFactor;
       }
     };
-
     /**
     * Resets the ball's position and speed when it collides with the left or right walls.
     */
