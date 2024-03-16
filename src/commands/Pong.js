@@ -18,6 +18,9 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
   const [scorePlayerOne, setScorePlayerOne] = useState(0);
   const [scorePlayerTwo, setScorePlayerTwo] = useState(0);
 
+  const soundScore = useRef(new Audio('score.mp3'));
+  const soundHit = useRef(new Audio('hit.mp3'));
+
   const quitGameRef = useRef(quitGame);
   useEffect(() => {
     quitGameRef.current = quitGame;
@@ -159,6 +162,7 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
         ball.speedX = currentVelocity * Math.cos(angle);
 
         ball.x = paddleWidth + ball.radius + 1; // Move ball slightly away from paddle
+        soundHit.current.play();
       }
       // Check collision with right paddle
       else if (ball.x + ball.radius >= canvas.width - paddleWidth && ball.y >= rightPaddleYRef.current && ball.y <= rightPaddleYRef.current + paddleHeight) {
@@ -175,6 +179,8 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
         ball.speedX = -currentVelocity * Math.cos(angle); // Negate to ensure ball moves left
 
         ball.x = canvas.width - paddleWidth - ball.radius - 1; // Move ball slightly away from paddle
+
+        soundHit.current.play();
       }
 
 
