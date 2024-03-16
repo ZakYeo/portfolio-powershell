@@ -20,6 +20,7 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
 
   const soundScore = useRef(new Audio('score.mp3'));
   const soundHit = useRef(new Audio('hit.mp3'));
+  const speedIncreaseFactor = 1.2;
 
   const quitGameRef = useRef(quitGame);
   useEffect(() => {
@@ -160,9 +161,12 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
         if (paddleMovingDown) angle += Math.PI / 12; // Increase angle if paddle moving down
         ball.speedY = currentVelocity * Math.sin(angle);
         ball.speedX = currentVelocity * Math.cos(angle);
+        ball.speedX *= speedIncreaseFactor;
+        ball.speedY *= speedIncreaseFactor;
 
         ball.x = paddleWidth + ball.radius + 1; // Move ball slightly away from paddle
         soundHit.current.play();
+
       }
       // Check collision with right paddle
       else if (ball.x + ball.radius >= canvas.width - paddleWidth && ball.y >= rightPaddleYRef.current && ball.y <= rightPaddleYRef.current + paddleHeight) {
@@ -177,6 +181,8 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
         if (paddleMovingDown) angle += Math.PI / 12; // Increase angle if paddle moving down
         ball.speedY = currentVelocity * Math.sin(angle);
         ball.speedX = -currentVelocity * Math.cos(angle); // Negate to ensure ball moves left
+        ball.speedX *= speedIncreaseFactor;
+        ball.speedY *= speedIncreaseFactor;
 
         ball.x = canvas.width - paddleWidth - ball.radius - 1; // Move ball slightly away from paddle
 
@@ -193,10 +199,12 @@ const Pong = ({ hasQuitPong, setHasQuitPong }) => {
       if (ball.x - ball.radius < 0) {
         // Ball hit the left wall, score for player two
         setScorePlayerTwo((prevScore) => prevScore + 1);
+        soundScore.current.play();
         initializeBall();
       } else if (ball.x + ball.radius > canvas.width) {
         // Ball hit the right wall, score for player one
         setScorePlayerOne((prevScore) => prevScore + 1);
+        soundScore.current.play();
         initializeBall();
       }
     };
