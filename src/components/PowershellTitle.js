@@ -15,7 +15,7 @@ const PowershellTitle = ({ onTypingFinished, shouldAnimate }) => {
       // Execute right away
       onTypingFinished();
     }
-  }, [shouldAnimate]);
+  }, [shouldAnimate, onTypingFinished]);
 
   return (
     <div style={styles.titleText}>
