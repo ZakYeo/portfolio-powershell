@@ -311,7 +311,7 @@ const Pong = ({ setHasQuitPong }) => {
 			document.removeEventListener('keydown', handleQuitKeyPress);
 			window.removeEventListener('resize', updateCanvasSize);
 		};
-	}, [quitGame, scorePlayerOne, scorePlayerTwo]);
+	}, [quitGame, scorePlayerOne, scorePlayerTwo, setHasQuitPong]);
 
 
 	const triggerConfetti = () => {
