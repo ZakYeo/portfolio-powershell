@@ -1,12 +1,13 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+
 /**
  * Pong using HTML Canvas element
  * Up & Down arrow to move player one
  * W & S to move player two
  */
-const Pong = ({ hasQuitPong, setHasQuitPong }) => {
+const Pong = ({ setHasQuitPong }) => {
 
 	const canvasRef = useRef(null);
 	const confettiRef = useRef([]);
