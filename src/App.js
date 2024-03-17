@@ -49,7 +49,7 @@ function App() {
 
 
     return () => resetBodyStyle();
-  }, []);
+  }, [hasQuitPong]);
 
 
 
