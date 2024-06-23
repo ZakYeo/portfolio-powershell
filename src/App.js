@@ -13,7 +13,6 @@ import Education from "./commands/Education";
 import PrintWorkingDirectory from "./commands/PrintWorkingDirectory";
 import About from "./commands/About";
 import Pong from "./commands/Pong";
-import Snake from "./commands/Snake";
 function App() {
 
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -44,7 +43,6 @@ function App() {
     registerCommand("pwd", PrintWorkingDirectory, {}, "Print the current working directory");
     registerCommand("about", About, {}, "View about me");
     registerCommand("pong", Pong, { hasQuitPong: hasQuitPong, setHasQuitPong: setHasQuitPong }, "Play a two player game of Pong");
-    registerCommand("snake", Snake, {}, "Play a solo game of snake")
     styleBody();
 
     setLoading(false);
