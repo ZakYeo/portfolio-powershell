@@ -3,22 +3,33 @@ import { useEffect, useState } from "react";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchRecentProjectsAsync = async () => {
+    (async () => {
       try {
         const fetchedProjects = await fetchRecentProjects();
         setProjects(fetchedProjects);
       } catch (error) {
-        console.error("Failed to fetch projects:", error);
+        setError(error.message)
+        console.error("Failed to fetch projects:", error.message);
       }
-    };
-
-    fetchRecentProjectsAsync();
+    })()
   }, []);
 
   return (
     <div>
+      {error && 
+        <div style={{
+              display: "flex",
+              flexDirection: 'column',
+              gap: "1rem",
+              paddingBottom: "0.5rem",
+              }}>
+          <div>Uh oh! An error occurred! Please contact Zak and tell him off: </div> 
+          <div>{error}</div>
+        </div>
+      } 
       {projects.map((project, index) => (
         <div key={index}>
           <div

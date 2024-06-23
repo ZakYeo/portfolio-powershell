@@ -7,8 +7,8 @@ import axios from "axios";
  */
 const fetchRecentProjects = async () => {
   const url = `https://7rt1o1m8b3.execute-api.eu-west-2.amazonaws.com/dev/github-projects/list`;
-  try {
     const response = await axios.get(url, {});
+  if(response.status === 200){
     return response.data.map((repo) => ({
       name: repo.name,
       url: repo.url,
@@ -18,8 +18,7 @@ const fetchRecentProjects = async () => {
       pushed_at: repo.pushed_at,
       language: repo.language,
     }));
-  } catch (error) {
-    console.error("Error fetching projects:", error);
+  }else{
     return [];
   }
 };
