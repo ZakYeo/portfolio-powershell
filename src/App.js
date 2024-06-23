@@ -20,6 +20,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [executeHelpCommand, setExecuteHelpCommand] = useState(false);
   const [hasQuitPong, setHasQuitPong] = useState(true);
+  const originalStyle = window.getComputedStyle(document.body).overflow; 
 
 
   useEffect(() => {
@@ -33,6 +34,13 @@ function App() {
     };
 
     checkVisit();
+
+    if(hasQuitPong === false){
+      window.scrollTo(0, document.body.scrollHeight);
+      document.body.style.overflow = 'hidden';
+    }else{
+      document.body.style.overflow = originalStyle;
+    }
 
 
     registerCommand("help", Help, {}, "Display help for all commands");
