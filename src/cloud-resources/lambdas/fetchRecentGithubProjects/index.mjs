@@ -30,6 +30,7 @@ export const handler = async (event) => {
         language: repo.language,
       }))
     );
+    resp.statusCode = 200;
   } catch (error) {
     console.error("Error fetching projects:", error);
     resp.body = JSON.stringify({
@@ -38,7 +39,6 @@ export const handler = async (event) => {
     });
   }
 
-  resp.statusCode = 200;
   console.log("Success", resp);
   return resp;
 };
