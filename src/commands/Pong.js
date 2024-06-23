@@ -135,6 +135,15 @@ const Pong = ({ setHasQuitPong }) => {
 
 
 
+        window.addEventListener('resize', () => {
+            const canvas = canvasRef.current;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight * 0.8;
+            const speeds = calculateBallSpeed(canvas);
+            ballRef.current.speedX = speeds.speedX;
+            ballRef.current.speedY = speeds.speedY;
+            resetBall(canvas, ballRef.current);
+        });
         resetBall(canvas, ballRef.current);
         gameLoop();
 
@@ -189,9 +198,19 @@ const Pong = ({ setHasQuitPong }) => {
     const resetBall = (canvas, ball) => {
         ball.x = canvas.width / 2;
         ball.y = canvas.height / 2;
-        const angle = Math.PI / 4 * (Math.random() * 2 - 1);
-        ball.speedX = 5 * (Math.random() < 0.5 ? 1 : -1);
-        ball.speedY = 5 * Math.sin(angle);
+        const speeds = calculateBallSpeed(canvas);
+        ball.speedX = speeds.speedX;
+        ball.speedY = speeds.speedY;
+    };
+
+
+    const calculateBallSpeed = (canvas) => {
+        const baseSpeedX = canvas.width / 250;
+        const baseSpeedY = canvas.width / 250;
+        return {
+            speedX: baseSpeedX * (Math.random() < 0.5 ? 1 : -1),
+            speedY: baseSpeedY * (Math.random() < 0.5 ? 1 : -1)
+        };
     };
 
     return <canvas ref={canvasRef} style={{ background: 'black' }}></canvas>;
