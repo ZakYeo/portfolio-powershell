@@ -27,6 +27,7 @@ const Pong = ({ setHasQuitPong }) => {
     const confettiRef = useRef([]);
     const soundHit = useRef(new Audio('hit.mp3'));
     const soundScore = useRef(new Audio('score.mp3'));
+    const speedIncrement = 0.2;
 
     useEffect(() => {
         setHasQuitPong(false);
@@ -88,7 +89,8 @@ const Pong = ({ setHasQuitPong }) => {
                 // Check for collisions with paddles
                 if ((ball.x - ball.radius <= paddleRef.current.width && ball.y >= paddleRef.current.leftY && ball.y <= paddleRef.current.leftY + paddleRef.current.height) ||
                     (ball.x + ball.radius >= canvas.width - paddleRef.current.width && ball.y >= paddleRef.current.rightY && ball.y <= paddleRef.current.rightY + paddleRef.current.height)) {
-                    ball.speedX = -ball.speedX;
+                    ball.speedX = -ball.speedX * (1 + speedIncrement);
+                    ball.speedY *= (1 + speedIncrement);
                     soundHit.current.play();
                 }
 
