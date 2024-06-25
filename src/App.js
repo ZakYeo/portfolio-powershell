@@ -13,6 +13,7 @@ import Education from "./commands/Education";
 import PrintWorkingDirectory from "./commands/PrintWorkingDirectory";
 import About from "./commands/About";
 import Pong from "./commands/Pong";
+import Clear from "./commands/clear";
 function App() {
 
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -20,7 +21,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [executeHelpCommand, setExecuteHelpCommand] = useState(false);
   const [hasQuitPong, setHasQuitPong] = useState(true);
-  const originalStyle = window.getComputedStyle(document.body).overflow; 
+  const originalStyle = window.getComputedStyle(document.body).overflow;
 
 
   useEffect(() => {
@@ -35,10 +36,10 @@ function App() {
 
     checkVisit();
 
-    if(hasQuitPong === false){
+    if (hasQuitPong === false) {
       window.scrollTo(0, document.body.scrollHeight);
       document.body.style.overflow = 'hidden';
-    }else{
+    } else {
       document.body.style.overflow = originalStyle;
     }
 
@@ -51,6 +52,7 @@ function App() {
     registerCommand("pwd", PrintWorkingDirectory, {}, "Print the current working directory");
     registerCommand("about", About, {}, "View about me");
     registerCommand("pong", Pong, { hasQuitPong: hasQuitPong, setHasQuitPong: setHasQuitPong }, "Play a two player game of Pong");
+    registerCommand("clear", Clear, {}, "Clear previous commands");
     styleBody();
 
     setLoading(false);

@@ -19,14 +19,13 @@ Some of the commands ping an external API, hosted on AWS, which call internal la
 - `pwd` -> Print working directory
 - `about` -> View about me
 - `pong` -> Play two player pong
-- `snake` -> Solo game of snake (unfinished)
+- `clear` -> Clear the command history
 - Help button (brings up help modal once pressed)
 
 ## Planned Features
 
 - New commands:
   - `links` -> Links to GitHub, LinkedIn, etc.
-  - `clear` -> Clear the command history
 - Command aliases (multiple command names for a single command)
 - Terminal themes
 - Swap operating systems e.g: Ubuntu, MacOS

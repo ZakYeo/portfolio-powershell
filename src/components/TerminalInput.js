@@ -78,8 +78,16 @@ const TerminalInput = ({ executeHelpCommand, setExecuteHelpCommand, hasQuitPong 
 
   useEffect(() => {
     console.log("Detected change in commandOutputs, saving to local storage.");
-    // Save command outputs to local storage whenever they change
-    localStorage.setItem("commandOutputs", JSON.stringify(commandOutputs));
+    console.log(commandOutputs[commandOutputs.length - 1])
+
+    if (commandOutputs[commandOutputs.length - 1]?.commandText === "clear") {
+      // User is using clear command
+      localStorage.setItem("commandOutputs", JSON.stringify({}));
+      setCommandOutputs([]);
+    } else {
+      localStorage.setItem("commandOutputs", JSON.stringify(commandOutputs));
+    }
+
   }, [commandOutputs]);
 
   useEffect(() => {
