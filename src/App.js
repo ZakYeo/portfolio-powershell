@@ -14,6 +14,8 @@ import PrintWorkingDirectory from "./commands/PrintWorkingDirectory";
 import About from "./commands/About";
 import Pong from "./commands/Pong";
 import Clear from "./commands/clear";
+import ReactGA from 'react-ga4';
+
 function App() {
 
   const [shouldAnimate, setShouldAnimate] = useState(false);
@@ -22,6 +24,12 @@ function App() {
   const [executeHelpCommand, setExecuteHelpCommand] = useState(false);
   const [hasQuitPong, setHasQuitPong] = useState(true);
   const originalStyle = window.getComputedStyle(document.body).overflow;
+
+
+  useEffect(() => {
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_MEASUREMENT_ID);
+    ReactGA.send("pageview");
+  }, []);
 
 
   useEffect(() => {
