@@ -1,3 +1,5 @@
+import ReactGA from 'react-ga4';
+
 export const commands = {};
 
 // Register a command with a name and a handler function
@@ -8,6 +10,11 @@ export const registerCommand = (name, Component, defaultProps = {}, description 
 // Execute a command if it exists
 export const executeCommand = (commandName, execProps = {}) => {
   if (commands[commandName]) {
+    ReactGA.event({
+      category: 'User',
+      action: 'Ran command',
+      label: commandName,
+    });
     const { Component, defaultProps } = commands[commandName];
     const props = { ...execProps, ...defaultProps, }; // Merge props, with execProps overriding defaultProps
     return <Component {...props} />;
